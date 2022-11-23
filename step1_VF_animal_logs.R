@@ -489,9 +489,9 @@ Waikerie_control_sheep16_1 <- read_csv(paste0(path_control, "Sheep 16 day 1.csv"
                 herd_postion = "leader")
 Waikerie_control_sheep16_2 <- read_csv(paste0(path_control, "Sheep 16 day 2.csv"), skip = 42) %>% 
   dplyr::mutate(sheep = 16,
-                treatment = "leader",
+                treatment = "control",
                 DOT = 2,
-                herd_postion = "follower")
+                herd_postion = "leader")
 Waikerie_control_sheep18_1 <- read_csv(paste0(path_control, "Sheep 18 day 1.csv"), skip = 42) %>% 
   dplyr::mutate(sheep = 18,
                 treatment = "control",
@@ -593,8 +593,8 @@ str(Waikerie_all)
 #format time and date clm from character to time
 Waikerie_all <-
   Waikerie_all %>%
-  dplyr::select(ID:time, sheep:herd_postion)
-  mutate(timeOfEvent = as.POSIXct(timeOfEvent, tz = "GMT", 
+  dplyr::select(ID:time, sheep:herd_postion) %>% 
+  mutate(timeOfEvent = as.POSIXct(time, tz = "GMT", 
                                   format = "%Y-%m-%d %H:%M:%S"))
 
 
@@ -645,14 +645,257 @@ Waikerie_all_sf_trans <-
   st_transform(Waikerie_all_sf, crs = 28354) 
 
 
-rm(Waikerie_all_sf,Waikerie_all )
+rm(Waikerie_all_sf )
+
+## write out the file in CSV format
+write.csv(Waikerie_all,row.names = FALSE,
+          file = "W:/VF/Optimising_VF/Waikerie/data_prep/GPS_cood_step_1a.csv")
+ 
 
 
-#-----Up to here-----#
+############################################################################################
+############                  bring in HOBO data            ##############################
+############################################################################################
 
-#Next steps boundaries trim location and time
-## merge in other animal data
-## look for weather data ? anything else??
+### bring in animal logs for VF all
+path_HOBO_PreVF <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/Hobo/PreVF/"
+
+sheep4_1 <- read_csv(paste0(path_HOBO_PreVF, "Yellow_Sheep4_day1.csv")) %>% 
+  dplyr::mutate(sheep = 4,
+                DOT = 1)
+sheep4_2 <- read_csv(paste0(path_HOBO_PreVF, "Yellow_Sheep4_day2.csv")) %>% 
+  dplyr::mutate(sheep = 4,
+                DOT = 2)
+
+sheep1_1 <- read_csv(paste0(path_HOBO_PreVF, "Red_Sheep1_day1.csv")) %>% 
+  dplyr::mutate(sheep = 1,
+                DOT = 1)
+sheep1_2 <- read_csv(paste0(path_HOBO_PreVF, "Red_Sheep1_day2.csv")) %>% 
+  dplyr::mutate(sheep = 1,
+                DOT = 2)
+
+sheep3_1 <- read_csv(paste0(path_HOBO_PreVF, "Orange_sheep3_day1.csv")) %>% 
+  dplyr::mutate(sheep = 3,
+                DOT = 1)
+sheep3_2 <- read_csv(paste0(path_HOBO_PreVF, "Orange_sheep3_day2.csv")) %>% 
+  dplyr::mutate(sheep = 3,
+                DOT = 2)
+
+sheep5_1 <- read_csv(paste0(path_HOBO_PreVF, "Green_sheep5_day1.csv")) %>% 
+  dplyr::mutate(sheep = 5,
+                DOT = 1)
+sheep5_2 <- read_csv(paste0(path_HOBO_PreVF, "Green_sheep5_day2.csv")) %>% 
+  dplyr::mutate(sheep = 5,
+                DOT = 2)
+
+sheep2_1 <- read_csv(paste0(path_HOBO_PreVF, "Blue_Sheep2_day1.csv")) %>% 
+  dplyr::mutate(sheep = 2,
+                DOT = 1)
+sheep2_2 <- read_csv(paste0(path_HOBO_PreVF, "Blue_Sheep2_day2.csv")) %>% 
+  dplyr::mutate(sheep = 2,
+                DOT = 2)
+sheep6_1 <- read_csv(paste0(path_HOBO_PreVF, "Black_Sheep6_day1.csv")) %>% 
+  dplyr::mutate(sheep = 6,
+                DOT = 1)
+sheep6_2 <- read_csv(paste0(path_HOBO_PreVF, "Black_Sheep6_day2.csv")) %>% 
+  dplyr::mutate(sheep = 6,
+                DOT = 2)
+
+
+HOBO_PreVF <- rbind(sheep1_1,
+                    sheep1_2,
+                    sheep2_1,
+                    sheep2_2, 
+                    sheep3_1,
+                    sheep3_2,
+                    sheep4_1,
+                    sheep4_2,
+                    sheep5_1,
+                    sheep5_2,
+                    sheep6_1,
+                    sheep6_2)
+rm(
+  sheep1_1,
+  sheep1_2,
+  sheep2_1,
+  sheep2_2,
+  sheep3_1,
+  sheep3_2,
+  sheep4_1,
+  sheep4_2,
+  sheep5_1,
+  sheep5_2,
+  sheep6_1,
+  sheep6_2
+)
+
+### bring in animal logs for VF all
+path_HOBO_PostVF <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/Hobo/PostVF/"
+
+sheep1_1 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d6.csv")) %>% 
+  dplyr::mutate(sheep = 1,
+                DOT = 6)
+sheep1_2 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d7.csv")) %>% 
+  dplyr::mutate(sheep = 1,
+                DOT = 7)
+
+sheep2_1 <- read_csv(paste0(path_HOBO_PostVF, "Blue_Sheep2_d6.csv")) %>% 
+  dplyr::mutate(sheep = 2,
+                DOT = 6)
+sheep2_2 <- read_csv(paste0(path_HOBO_PostVF, "Blue_Sheep2_d7.csv")) %>% 
+  dplyr::mutate(sheep = 2,
+                DOT = 7)
+
+sheep3_1 <- read_csv(paste0(path_HOBO_PostVF, "Orange_sheep3_d6.csv")) %>% 
+  dplyr::mutate(sheep = 3,
+                DOT = 6)
+sheep3_2 <- read_csv(paste0(path_HOBO_PostVF, "Orange_sheep3_d7.csv")) %>% 
+  dplyr::mutate(sheep = 3,
+                DOT = 7)
+
+
+sheep4_1 <- read_csv(paste0(path_HOBO_PostVF, "Yellow_Sheep4__d6.csv")) %>% 
+  dplyr::mutate(sheep = 4,
+                DOT = 6)
+sheep4_2 <- read_csv(paste0(path_HOBO_PostVF, "Yellow_Sheep4_d7.csv")) %>% 
+  dplyr::mutate(sheep = 4,
+                DOT = 7)
+
+sheep5_1 <- read_csv(paste0(path_HOBO_PostVF, "Green_sheep5_d6.csv")) %>% 
+  dplyr::mutate(sheep = 5,
+                DOT = 6)
+sheep5_2 <- read_csv(paste0(path_HOBO_PostVF, "Green_sheep5_d7.csv")) %>% 
+  dplyr::mutate(sheep = 5,
+                DOT = 7)
+sheep6_1 <- read_csv(paste0(path_HOBO_PostVF, "Black_Sheep6_d6.csv")) %>% 
+  dplyr::mutate(sheep = 6,
+                DOT = 6)
+sheep6_2 <- read_csv(paste0(path_HOBO_PostVF, "Black_Sheep6_d7.csv")) %>% 
+  dplyr::mutate(sheep = 6,
+                DOT = 7)
+
+sheep7_1 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d6.csv")) %>% 
+  dplyr::mutate(sheep = 7,
+                DOT = 6)
+sheep7_2 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d7.csv")) %>% 
+  dplyr::mutate(sheep = 7,
+                DOT = 7)
+
+
+HOBO_PostVF <- rbind(sheep1_1,
+                     sheep1_2,
+                     sheep2_1,
+                     sheep2_2,
+                     sheep3_1,
+                     sheep3_2,
+                     sheep4_1,
+                     sheep4_2,
+                     sheep5_1,
+                     sheep5_2,
+                     sheep6_1,
+                     sheep6_2,
+                     sheep7_1,
+                     sheep7_2)
+rm(sheep1_1,
+   sheep1_2,
+   sheep2_1,
+   sheep2_2,
+   sheep3_1,
+   sheep3_2,
+   sheep4_1,
+   sheep4_2,
+   sheep5_1,
+   sheep5_2,
+   sheep6_1,
+   sheep6_2,
+   sheep7_1,
+   sheep7_2)
+
+
+### bring in animal logs for VF all
+path_HOBO_VFtest <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/Hobo/VF test/"
+
+sheep1_1 <- read_csv(paste0(path_HOBO_VFtest, "Red_Sheep1_d4.csv")) %>% 
+  dplyr::mutate(sheep = 1,
+                DOT = 4)
+sheep1_2 <- read_csv(paste0(path_HOBO_VFtest, "Red_Sheep1_d5.csv")) %>% 
+  dplyr::mutate(sheep = 1,
+                DOT = 5)
+sheep2_1 <- read_csv(paste0(path_HOBO_VFtest, "Blue_Sheep2_d4.csv")) %>% 
+  dplyr::mutate(sheep = 2,
+                DOT = 4)
+sheep2_2 <- read_csv(paste0(path_HOBO_VFtest, "Blue_Sheep2_d5.csv")) %>% 
+  dplyr::mutate(sheep = 2,
+                DOT = 5)
+sheep3_1 <- read_csv(paste0(path_HOBO_VFtest, "Orange_sheep3_d4.csv")) %>% 
+  dplyr::mutate(sheep = 3,
+                DOT = 4)
+sheep3_2 <- read_csv(paste0(path_HOBO_VFtest, "Orange_sheep3_d5.csv")) %>% 
+  dplyr::mutate(sheep = 3,
+                DOT = 5)
+sheep4_1 <- read_csv(paste0(path_HOBO_VFtest, "Yellow_Sheep4_d4.csv")) %>% 
+  dplyr::mutate(sheep = 4,
+                DOT = 4)
+sheep4_2 <- read_csv(paste0(path_HOBO_VFtest, "Yellow_Sheep4_d5.csv")) %>% 
+  dplyr::mutate(sheep = 4,
+                DOT = 5)
+sheep5_1 <- read_csv(paste0(path_HOBO_VFtest, "Green_sheep5_d4.csv")) %>% 
+  dplyr::mutate(sheep = 5,
+                DOT = 4)
+sheep5_2 <- read_csv(paste0(path_HOBO_VFtest, "Green_sheep5_d5.csv")) %>% 
+  dplyr::mutate(sheep = 5,
+                DOT = 5)
+sheep6_1 <- read_csv(paste0(path_HOBO_VFtest, "Black_Sheep6_d4.csv")) %>% 
+  dplyr::mutate(sheep = 6,
+                DOT = 4)
+sheep6_2 <- read_csv(paste0(path_HOBO_VFtest, "Black_Sheep6_d5.csv")) %>% 
+  dplyr::mutate(sheep = 6,
+                DOT = 5)
+
+
+HOBO_VFtest <- rbind(sheep1_1,
+                     sheep1_2,
+                     sheep2_1,
+                     sheep2_2,
+                     sheep3_1,
+                     sheep3_2,
+                     sheep4_1,
+                     sheep4_2,
+                     sheep5_1,
+                     sheep5_2,
+                     sheep6_1,
+                     sheep6_2)
+rm(sheep1_1,
+   sheep1_2,
+   sheep2_1,
+   sheep2_2,
+   sheep3_1,
+   sheep3_2,
+   sheep4_1,
+   sheep4_2,
+   sheep5_1,
+   sheep5_2,
+   sheep6_1,
+   sheep6_2)
+
+# "Blue_sheep_d3.csv"
+# "Green_sheep_d3.csv"
+# "Black_sheep_d3.csv"
+# "Orange_sheep_d3.csv"
+# "Red_sheep_d3.csv"
+# "Yellow_Sheep_d3.csv"
+
+
+## write out the file in CSV format
+write.csv(HOBO_PreVF,row.names = FALSE,
+          file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PreVF.csv")
+write.csv(HOBO_PostVF,row.names = FALSE,
+          file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PostVF.csv")
+write.csv(HOBO_VFtest,row.names = FALSE,
+          file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_VFtest.csv")
+
+
+
 ############################################################################################
 ############                  bring in boundaries             ##############################
 ############################################################################################
@@ -660,78 +903,47 @@ rm(Waikerie_all_sf,Waikerie_all )
 
 
 
-Chiswick_hard_fence_bound <- st_read("W:/VF/Sheep_Chiswick_2022/spatial_boundaries/Chiswick_paddock_boundary_final.shp")  # this is the hard fences
+hard_fence_bound <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Boundary_25m.shp")  # this is the hard fences
 
-Chiswick_hard_fence_bound <-
-  st_transform(Chiswick_hard_fence_bound, crs = 28355)
-
-
-Chiswick_hard_fence_bound_buff <- st_read("W:/VF/Sheep_Chiswick_2022/spatial_boundaries/Chiswick_paddock_boundary_final_buff10.shp")  # this is the 
-
-Chiswick_hard_fence_bound_buff <-
-  st_transform(Chiswick_hard_fence_bound_buff, crs = 28355)
-
-
-VF_paddock <-   st_read("W:/VF/Sheep_Chiswick_2022/spatial_boundaries/VF_paddock.shp")
-
-VF_paddock <-  st_transform(VF_paddock, crs = 28355)
-
-water_pt <-  st_read("W:/VF/Sheep_Chiswick_2022/spatial_boundaries/water_pt.shp")
-
+VF <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Boundary_VF_paddock.shp")
 
 
 
 
 ggplot() +
-  geom_sf(data = Chiswick_hard_fence_bound, color = "black", fill = NA) +
-  geom_sf(data = VF_paddock, color = "black", fill = NA) +
-  geom_sf(data = Chiswick_hard_fence_bound_buff, color = "black", fill = NA) +
-  geom_sf(data = water_pt ,color ="Blue") +
-  geom_sf(data = animal_GPS_data_sf_trans ,alpha = 0.03) +
+  geom_sf(data = hard_fence_bound, color = "black", fill = NA) +
+  geom_sf(data = VF, color = "black", fill = NA) +
+  geom_sf(data = Waikerie_all_sf_trans ,alpha = 0.03) +
   theme_bw()+
   theme(legend.position = "none",
         axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank())+
-  labs(title = "all animal logs with a buffer of 10m")
-
-
-
-ggplot() +
-  geom_sf(data = Chiswick_hard_fence_bound, color = "black", fill = NA) +
-  geom_sf(data = VF_paddock, color = "black", fill = NA) +
-  geom_sf(data = Chiswick_hard_fence_bound_buff, color = "black", fill = NA) +
-  geom_sf(data = water_pt ,color ="Blue") +
-  geom_sf(data = animal_GPS_data_sf_trans ,alpha = 0.05) +
-  theme_bw()+
-  theme(legend.position = "none",
-        axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank())+
-facet_wrap(. ~ date)+
-  labs(title = "all animal logs, dates as facet")
+  labs(title = "")
 
 
 
 
-str(animal_GPS_data_sf_trans)
+
 
 
 
 
 # --------------------------------------------------------------------------------------------------------------------- #
-
+str(Waikerie_all_sf_trans)
+min(Waikerie_all_sf_trans$local_time)
+max(Waikerie_all_sf_trans$local_time)
 
 
 
 ################################################################################
-#### filtering out data based on times trail 28/6- 9:50 and end 2/7- at 10:10 – this is based on the times Dana gave me
+#### filtering out data based on times 
 
-# start of trial (according to sue) - keep everything after  17th 11:35 or 11:40 s above
-
-animal_GPS_data_sf_trans <- animal_GPS_data_sf_trans %>% 
+Waikerie_all_sf_trans <- Waikerie_all_sf_trans %>% 
   filter(
-  local_time >=  ymd_hms("2022-06-28 09:50:00", tz= "Australia/Sydney"))
+  local_time >=  ymd_hms("2018-03-13 09:30:00", tz= "Australia/Melbourne"))
 
-animal_GPS_data_sf_trans <- animal_GPS_data_sf_trans %>% 
+Waikerie_all_sf_trans <- Waikerie_all_sf_trans %>% 
   filter(
-    local_time <=  ymd_hms("2022-07-02 10:10:00", tz= "Australia/Sydney"))
+    local_time <=  ymd_hms("2018-03-16 15:30:00", tz= "Australia/Melbourne"))
 
 
 
@@ -740,47 +952,43 @@ animal_GPS_data_sf_trans <- animal_GPS_data_sf_trans %>%
 
 
 
-# Times sheep were brought in each day for the VF Chiswick trial;
-# 28/6- sheep out 9:50
-# 29/6 11:21- 12:21
-# 30/6 10:34- 11:36
-# 1/7- 10:37- 11:20
-# 2/7- Brought in at 10:10
+# Times sheep were brought in each day from what I can understand from the write up HOBO data;
+
 #### each day the animals were yarded so i need to remove this data
 
 # let divide the data per day
-day_28 <- animal_GPS_data_sf_trans %>%  filter(date == "2022-06-28")
-day_29 <- animal_GPS_data_sf_trans %>%  filter(date == "2022-06-29")
-day_30 <- animal_GPS_data_sf_trans %>%  filter(date == "2022-06-30")
-day_1 <- animal_GPS_data_sf_trans %>%  filter(date == "2022-07-01")
-day_2 <- animal_GPS_data_sf_trans %>%  filter(date == "2022-07-02")
+day_13 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-13") 
+day_14 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-14")
+day_15 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-15")
+day_16 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-16")
+
+# let divide the data per day and again by treatment
+day_13 <-day_13 %>%  filter(treatment == "100_percent"| treatment == "control")
+day_14 <-day_14 %>%  filter(treatment == "100_percent"| treatment == "control")
+
+day_15 <-day_15 %>%  filter(treatment == "33_percent"| treatment == "66_percent")
+day_16 <-day_16 %>%  filter(treatment == "33_percent"| treatment == "66_percent")
+
+
+str(day_13)
+#-----Up to here----- The below code is not working#
+
+#Next steps boundaries trim location and time
+## merge in other animal data
+## look for weather data ? anything else??
 
 # keep everything after before yarding and after yarding
 
-day_29_before_yarding <- day_29 %>%
-  filter(local_time <=  ymd_hms("2022-06-29 11:21:00", tz = "Australia/Sydney"))
-day_29_after_yarding <- day_29 %>%
-  filter(local_time >=  ymd_hms("2022-06-29 12:21:00", tz = "Australia/Sydney"))
+day_13_before_yarding <- day_13 %>%
+  filter(local_time <=  ymd_hms("2018-03-13 09:30:00", tz = "Australia/Melbourne"))
+day_13_after_yarding <- day_13 %>%
+  filter(local_time >=  ymd_hms("2022-06-29 15:30:00", tz = "Australia/Melbourne"))
                   
-day_29_clean <- rbind(day_29_before_yarding, day_29_after_yarding)
-rm(day_29_before_yarding, day_29_after_yarding, day_29)
+day_13_clean <- rbind(day_13_before_yarding, day_13_after_yarding)
+rm(day_13_before_yarding, day_13_after_yarding, day_13)
 
 
-day_30_before_yarding <- day_30 %>%
-  filter(local_time <=  ymd_hms("2022-06-30 10:34:00", tz = "Australia/Sydney"))
-day_30_after_yarding <- day_30 %>%
-  filter(local_time >=  ymd_hms("2022-06-30 11:36:00", tz = "Australia/Sydney"))
 
-day_30_clean <- rbind(day_30_before_yarding, day_30_after_yarding)
-rm(day_30_before_yarding, day_30_after_yarding, day_30)
-
-day_1_before_yarding <- day_1 %>%
-  filter(local_time <=  ymd_hms("2022-07-01 10:37:00", tz = "Australia/Sydney"))
-day_1_after_yarding <- day_1 %>%
-  filter(local_time >=  ymd_hms("2022-07-01 11:20:00", tz = "Australia/Sydney"))
-
-day_1_clean <- rbind(day_1_before_yarding, day_1_after_yarding)
-rm(day_1_before_yarding, day_1_after_yarding, day_1)
 
 
 ### put it back togther 
