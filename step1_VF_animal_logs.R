@@ -6,6 +6,7 @@ library(DT)
 library(sp)
 #install.packages("sf")
 library(sf)
+library(readxl)
 
 
 
@@ -886,191 +887,113 @@ rm(sheep1_1,
 # "Yellow_Sheep_d3.csv"
 
 
+################################################################################
+####   The date time clm looks suss the year is 2017 and the trial was 2018 ####
+### I am going to use the time out of this clm and assume its local time ??? ###
+################################################################################
+
+str(HOBO_VFtest)
+
+HOBO_VFtest_1 <- HOBO_VFtest
+HOBO_VFtest_1 <-  HOBO_VFtest_1 %>% separate(`Date Time`, into = c("dummy_date", "local_time"), sep=" ", remove=FALSE)
+HOBO_VFtest_1 <-  HOBO_VFtest_1 %>% separate(local_time, into = c("test1", "test2", "test3"), sep=":")
+str(HOBO_VFtest_1)
+
+HOBO_VFtest_1$test3 <- as.double(HOBO_VFtest_1$test3)
+HOBO_VFtest_1 <- HOBO_VFtest_1 %>% 
+  mutate(local_time = paste0(test1, ":", test2,":", test3))
+
+## add a real date
+
+HOBO_VFtest_1 <-  HOBO_VFtest_1 %>%
+  mutate(
+    date = case_when(
+      DOT == 1 ~ "13/03/2018",
+      DOT == 2 ~ "14/03/2018",
+      DOT == 3 ~ "15/03/2018",
+      DOT == 4 ~ "16/03/2018",
+      ))
+
+HOBO_VFtest_1 <-  HOBO_VFtest_1 %>%
+  mutate(date_time = paste0(date," ", local_time))
+
+HOBO_VFtest_1$date_time <- as.POSIXct(HOBO_VFtest_1$date_time, format="%d/%m/%Y %H:%M:%S")
+
+## remove dummy clm and rows with no data
+
+str(HOBO_VFtest_1)
+HOBO_VFtest_1 <- HOBO_VFtest_1 %>%  dplyr::select(-test1, 
+                                                  -test2,
+                                                  -test3,
+                                                  -dummy_date)
+HOBO_VFtest_1 <- HOBO_VFtest_1 %>% filter(!is.na(date_time))
+
+
+
 ## write out the file in CSV format
 write.csv(HOBO_PreVF,row.names = FALSE,
           file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PreVF.csv")
 write.csv(HOBO_PostVF,row.names = FALSE,
           file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PostVF.csv")
-write.csv(HOBO_VFtest,row.names = FALSE,
+write.csv(HOBO_VFtest_1,row.names = FALSE,
           file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_VFtest.csv")
 
-
-
-############################################################################################
-############                  bring in boundaries             ##############################
-############################################################################################
-
-
-
-
-hard_fence_bound <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Boundary_25m.shp")  # this is the hard fences
-
-VF <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Boundary_VF_paddock.shp")
-
-
-
-
-ggplot() +
-  geom_sf(data = hard_fence_bound, color = "black", fill = NA) +
-  geom_sf(data = VF, color = "black", fill = NA) +
-  geom_sf(data = Waikerie_all_sf_trans ,alpha = 0.03) +
-  theme_bw()+
-  theme(legend.position = "none",
-        axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank())+
-  labs(title = "")
-
-
-
-
-
-
-
-
-
-# --------------------------------------------------------------------------------------------------------------------- #
-str(Waikerie_all_sf_trans)
-min(Waikerie_all_sf_trans$local_time)
-max(Waikerie_all_sf_trans$local_time)
-
-
-
 ################################################################################
-#### filtering out data based on times 
+#####                      Behavioural data              #######################
+###############################################################################
 
-Waikerie_all_sf_trans <- Waikerie_all_sf_trans %>% 
-  filter(
-  local_time >=  ymd_hms("2018-03-13 09:30:00", tz= "Australia/Melbourne"))
+### bring in animal logs for VF all
+path_behavioural <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/"
 
-Waikerie_all_sf_trans <- Waikerie_all_sf_trans %>% 
-  filter(
-    local_time <=  ymd_hms("2018-03-16 15:30:00", tz= "Australia/Melbourne"))
 
+Behav_100 <- read_excel(paste0(path_behavioural, "VF_Behaviour.xlsx"), sheet = "100%") %>% 
+  mutate(treatment = "100_percent")
 
+Behav_33 <- read_excel(paste0(path_behavioural, "VF_Behaviour.xlsx"), sheet = "33%") %>% 
+  mutate(treatment = "33_percent")
 
+Behav_66 <- read_excel(paste0(path_behavioural, "VF_Behaviour.xlsx"), sheet = "66%") %>% 
+  mutate(treatment = "66_percent") %>% 
+  rename(`Time to graze(s)` = Sue)
 
 
+Behav <- rbind(Behav_100, Behav_33, Behav_66)
+rm(Behav_100, Behav_33, Behav_66)
 
 
+### clean up the time clm the time was manually entered and is not GMT so convert to string
 
-# Times sheep were brought in each day from what I can understand from the write up HOBO data;
+Behav$Time <- as.character(Behav$Time)
+str(Behav)
+Behav <-  Behav %>% separate(Time, into = c("dummy_date", "local_time"), sep=" ")
+## add a real date
 
-#### each day the animals were yarded so i need to remove this data
+Behav <-  Behav %>%
+  mutate(
+    date = case_when(
+      treatment == "100_percent" & Day == 1 ~ "13/03/2018",
+      treatment == "100_percent" & Day == 2 ~ "14/03/2018",
+      
+      treatment == "33_percent" & Day == 1 ~ "15/03/2018",
+      treatment == "33_percent" & Day == 2 ~ "16/03/2018",
+      
+      treatment == "66_percent" & Day == 1 ~ "15/03/2018",
+      treatment == "66_percent" & Day == 2 ~ "16/03/2018"))
 
-# let divide the data per day
-day_13 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-13") 
-day_14 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-14")
-day_15 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-15")
-day_16 <- Waikerie_all_sf_trans %>%  filter(date == "2018-03-16")
+Behav <-  Behav %>%
+  mutate(date_time = paste0(date," ", local_time))
 
-# let divide the data per day and again by treatment
-day_13 <-day_13 %>%  filter(treatment == "100_percent"| treatment == "control")
-day_14 <-day_14 %>%  filter(treatment == "100_percent"| treatment == "control")
+str(Behav)
 
-day_15 <-day_15 %>%  filter(treatment == "33_percent"| treatment == "66_percent")
-day_16 <-day_16 %>%  filter(treatment == "33_percent"| treatment == "66_percent")
 
+Behav$date_time <- as.POSIXct(Behav$date_time, format="%d/%m/%Y %H:%M:%S")
 
-str(day_13)
-#-----Up to here----- The below code is not working#
+## remove dummy clm and rows with no data
 
-#Next steps boundaries trim location and time
-## merge in other animal data
-## look for weather data ? anything else??
+str(Behav)
+Behav <- Behav %>%  dplyr::select(-dummy_date)
+Behav <- Behav %>% filter(!is.na(date_time))
 
-# keep everything after before yarding and after yarding
 
-day_13_before_yarding <- day_13 %>%
-  filter(local_time <=  ymd_hms("2018-03-13 09:30:00", tz = "Australia/Melbourne"))
-day_13_after_yarding <- day_13 %>%
-  filter(local_time >=  ymd_hms("2022-06-29 15:30:00", tz = "Australia/Melbourne"))
-                  
-day_13_clean <- rbind(day_13_before_yarding, day_13_after_yarding)
-rm(day_13_before_yarding, day_13_after_yarding, day_13)
-
-
-
-
-
-### put it back togther 
-
-animals_GPS_trim_time <- rbind(day_28, day_29_clean, day_30_clean, day_1_clean, day_2)
-
-rm(day_28, day_29_clean, day_30_clean, day_1_clean, day_2)
-
-########################################################################################
-
-
-
-
-
-### remove the water and other animals logs
-
-
-animals_GPS_trim_time <- animals_GPS_trim_time %>% 
-  filter(Sheep_ID !=  "other") %>% 
-  filter(Sheep_ID !=  "water_pt")
-
-
-ggplot() +
-  geom_sf(data = Chiswick_hard_fence_bound, color = "black", fill = NA) +
-  geom_sf(data = VF_paddock, color = "black", fill = NA) +
-  geom_sf(data = Chiswick_hard_fence_bound_buff, color = "black", fill = NA) +
-  geom_sf(data = water_pt ,color ="Blue") +
-  geom_sf(data = animal_GPS_data_sf_trans ,alpha = 0.05) +
-  facet_wrap(.~ date)+
-  theme_bw()+
-  theme(legend.position = "none",
-        axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank())+
-  labs(title = "All animal logs between 28/06 at 09:50 and 02/07 at 10:10",
-  subtitle = "log when animals were yarded removed")
-
-
-
-# -------------------------------------------------------------------------------------------------- ###
-
-
-#I think this should be the end of step 1.
-
-
-
-
-
-
-
-########################################################################################################
-
-
-
-output_path <- "W:/VF/Sheep_Chiswick_2022/animal_logs/jax_working"  #animals_GPS_trim_time
-
-
-############################################################################################################################
-### format the aniaml log data so I output the clm with local time and keep time difference cals and have clm for x and y
-
-## convert the geom clm into x and y clms
-
-
-coordinates <-as.data.frame( st_coordinates(animals_GPS_trim_time))
-animals_GPS_trim_time_df <- as.data.frame(animals_GPS_trim_time)
-
-animals_GPS_trim_time_df <- animals_GPS_trim_time_df %>% 
-  dplyr::select(-"geometry")
-
-
-animals_GPS_trim_time <-   cbind(animals_GPS_trim_time_df,coordinates )
-## ensure the date and time clms are outputting and outputting in the correct format.
-
-
-animals_GPS_trim_time$local_time <-   format(animals_GPS_trim_time$local_time, usetz=TRUE)
-animals_GPS_trim_time$GMT        <-   format(animals_GPS_trim_time$GMT, usetz=TRUE)
-animals_GPS_trim_time$start_fence <-  format(animals_GPS_trim_time$start_fence, usetz=TRUE)
-animals_GPS_trim_time$end_fence    <- format(animals_GPS_trim_time$end_fence, usetz=TRUE)
-animals_GPS_trim_time$start_trial    <- format(animals_GPS_trim_time$start_trial, usetz=TRUE)
-
-write.csv(animals_GPS_trim_time, 
-          paste0(output_path,"/animals_GPS_trim_time_step1.csv"), 
-          row.names=FALSE)
-#############################################################
-
-
-
+write.csv(Behav,row.names = FALSE,
+          file = "W:/VF/Optimising_VF/Waikerie/data_prep/Behavioural.csv")
