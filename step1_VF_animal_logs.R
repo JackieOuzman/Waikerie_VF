@@ -658,234 +658,126 @@ write.csv(Waikerie_all,row.names = FALSE,
 ############                  bring in HOBO data            ##############################
 ############################################################################################
 
-### bring in animal logs for VF all
-path_HOBO_PreVF <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/Hobo/PreVF/"
-
-sheep4_1 <- read_csv(paste0(path_HOBO_PreVF, "Yellow_Sheep4_day1.csv")) %>% 
-  dplyr::mutate(sheep = 4,
-                DOT = 1)
-sheep4_2 <- read_csv(paste0(path_HOBO_PreVF, "Yellow_Sheep4_day2.csv")) %>% 
-  dplyr::mutate(sheep = 4,
-                DOT = 2)
-
-sheep1_1 <- read_csv(paste0(path_HOBO_PreVF, "Red_Sheep1_day1.csv")) %>% 
-  dplyr::mutate(sheep = 1,
-                DOT = 1)
-sheep1_2 <- read_csv(paste0(path_HOBO_PreVF, "Red_Sheep1_day2.csv")) %>% 
-  dplyr::mutate(sheep = 1,
-                DOT = 2)
-
-sheep3_1 <- read_csv(paste0(path_HOBO_PreVF, "Orange_sheep3_day1.csv")) %>% 
-  dplyr::mutate(sheep = 3,
-                DOT = 1)
-sheep3_2 <- read_csv(paste0(path_HOBO_PreVF, "Orange_sheep3_day2.csv")) %>% 
-  dplyr::mutate(sheep = 3,
-                DOT = 2)
-
-sheep5_1 <- read_csv(paste0(path_HOBO_PreVF, "Green_sheep5_day1.csv")) %>% 
-  dplyr::mutate(sheep = 5,
-                DOT = 1)
-sheep5_2 <- read_csv(paste0(path_HOBO_PreVF, "Green_sheep5_day2.csv")) %>% 
-  dplyr::mutate(sheep = 5,
-                DOT = 2)
-
-sheep2_1 <- read_csv(paste0(path_HOBO_PreVF, "Blue_Sheep2_day1.csv")) %>% 
-  dplyr::mutate(sheep = 2,
-                DOT = 1)
-sheep2_2 <- read_csv(paste0(path_HOBO_PreVF, "Blue_Sheep2_day2.csv")) %>% 
-  dplyr::mutate(sheep = 2,
-                DOT = 2)
-sheep6_1 <- read_csv(paste0(path_HOBO_PreVF, "Black_Sheep6_day1.csv")) %>% 
-  dplyr::mutate(sheep = 6,
-                DOT = 1)
-sheep6_2 <- read_csv(paste0(path_HOBO_PreVF, "Black_Sheep6_day2.csv")) %>% 
-  dplyr::mutate(sheep = 6,
-                DOT = 2)
-
-
-HOBO_PreVF <- rbind(sheep1_1,
-                    sheep1_2,
-                    sheep2_1,
-                    sheep2_2, 
-                    sheep3_1,
-                    sheep3_2,
-                    sheep4_1,
-                    sheep4_2,
-                    sheep5_1,
-                    sheep5_2,
-                    sheep6_1,
-                    sheep6_2)
-rm(
-  sheep1_1,
-  sheep1_2,
-  sheep2_1,
-  sheep2_2,
-  sheep3_1,
-  sheep3_2,
-  sheep4_1,
-  sheep4_2,
-  sheep5_1,
-  sheep5_2,
-  sheep6_1,
-  sheep6_2
-)
-
-### bring in animal logs for VF all
-path_HOBO_PostVF <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/Hobo/PostVF/"
-
-sheep1_1 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d6.csv")) %>% 
-  dplyr::mutate(sheep = 1,
-                DOT = 6)
-sheep1_2 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d7.csv")) %>% 
-  dplyr::mutate(sheep = 1,
-                DOT = 7)
-
-sheep2_1 <- read_csv(paste0(path_HOBO_PostVF, "Blue_Sheep2_d6.csv")) %>% 
-  dplyr::mutate(sheep = 2,
-                DOT = 6)
-sheep2_2 <- read_csv(paste0(path_HOBO_PostVF, "Blue_Sheep2_d7.csv")) %>% 
-  dplyr::mutate(sheep = 2,
-                DOT = 7)
-
-sheep3_1 <- read_csv(paste0(path_HOBO_PostVF, "Orange_sheep3_d6.csv")) %>% 
-  dplyr::mutate(sheep = 3,
-                DOT = 6)
-sheep3_2 <- read_csv(paste0(path_HOBO_PostVF, "Orange_sheep3_d7.csv")) %>% 
-  dplyr::mutate(sheep = 3,
-                DOT = 7)
-
-
-sheep4_1 <- read_csv(paste0(path_HOBO_PostVF, "Yellow_Sheep4__d6.csv")) %>% 
-  dplyr::mutate(sheep = 4,
-                DOT = 6)
-sheep4_2 <- read_csv(paste0(path_HOBO_PostVF, "Yellow_Sheep4_d7.csv")) %>% 
-  dplyr::mutate(sheep = 4,
-                DOT = 7)
-
-sheep5_1 <- read_csv(paste0(path_HOBO_PostVF, "Green_sheep5_d6.csv")) %>% 
-  dplyr::mutate(sheep = 5,
-                DOT = 6)
-sheep5_2 <- read_csv(paste0(path_HOBO_PostVF, "Green_sheep5_d7.csv")) %>% 
-  dplyr::mutate(sheep = 5,
-                DOT = 7)
-sheep6_1 <- read_csv(paste0(path_HOBO_PostVF, "Black_Sheep6_d6.csv")) %>% 
-  dplyr::mutate(sheep = 6,
-                DOT = 6)
-sheep6_2 <- read_csv(paste0(path_HOBO_PostVF, "Black_Sheep6_d7.csv")) %>% 
-  dplyr::mutate(sheep = 6,
-                DOT = 7)
-
-sheep7_1 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d6.csv")) %>% 
-  dplyr::mutate(sheep = 7,
-                DOT = 6)
-sheep7_2 <- read_csv(paste0(path_HOBO_PostVF, "Red_Sheep1_d7.csv")) %>% 
-  dplyr::mutate(sheep = 7,
-                DOT = 7)
-
-
-HOBO_PostVF <- rbind(sheep1_1,
-                     sheep1_2,
-                     sheep2_1,
-                     sheep2_2,
-                     sheep3_1,
-                     sheep3_2,
-                     sheep4_1,
-                     sheep4_2,
-                     sheep5_1,
-                     sheep5_2,
-                     sheep6_1,
-                     sheep6_2,
-                     sheep7_1,
-                     sheep7_2)
-rm(sheep1_1,
-   sheep1_2,
-   sheep2_1,
-   sheep2_2,
-   sheep3_1,
-   sheep3_2,
-   sheep4_1,
-   sheep4_2,
-   sheep5_1,
-   sheep5_2,
-   sheep6_1,
-   sheep6_2,
-   sheep7_1,
-   sheep7_2)
 
 
 ### bring in animal logs for VF all
-path_HOBO_VFtest <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/Hobo/VF test/"
-
-sheep1_1 <- read_csv(paste0(path_HOBO_VFtest, "Red_Sheep1_d4.csv")) %>% 
-  dplyr::mutate(sheep = 1,
-                DOT = 4)
-sheep1_2 <- read_csv(paste0(path_HOBO_VFtest, "Red_Sheep1_d5.csv")) %>% 
-  dplyr::mutate(sheep = 1,
-                DOT = 5)
-sheep2_1 <- read_csv(paste0(path_HOBO_VFtest, "Blue_Sheep2_d4.csv")) %>% 
-  dplyr::mutate(sheep = 2,
-                DOT = 4)
-sheep2_2 <- read_csv(paste0(path_HOBO_VFtest, "Blue_Sheep2_d5.csv")) %>% 
-  dplyr::mutate(sheep = 2,
-                DOT = 5)
-sheep3_1 <- read_csv(paste0(path_HOBO_VFtest, "Orange_sheep3_d4.csv")) %>% 
-  dplyr::mutate(sheep = 3,
-                DOT = 4)
-sheep3_2 <- read_csv(paste0(path_HOBO_VFtest, "Orange_sheep3_d5.csv")) %>% 
-  dplyr::mutate(sheep = 3,
-                DOT = 5)
-sheep4_1 <- read_csv(paste0(path_HOBO_VFtest, "Yellow_Sheep4_d4.csv")) %>% 
-  dplyr::mutate(sheep = 4,
-                DOT = 4)
-sheep4_2 <- read_csv(paste0(path_HOBO_VFtest, "Yellow_Sheep4_d5.csv")) %>% 
-  dplyr::mutate(sheep = 4,
-                DOT = 5)
-sheep5_1 <- read_csv(paste0(path_HOBO_VFtest, "Green_sheep5_d4.csv")) %>% 
-  dplyr::mutate(sheep = 5,
-                DOT = 4)
-sheep5_2 <- read_csv(paste0(path_HOBO_VFtest, "Green_sheep5_d5.csv")) %>% 
-  dplyr::mutate(sheep = 5,
-                DOT = 5)
-sheep6_1 <- read_csv(paste0(path_HOBO_VFtest, "Black_Sheep6_d4.csv")) %>% 
-  dplyr::mutate(sheep = 6,
-                DOT = 4)
-sheep6_2 <- read_csv(paste0(path_HOBO_VFtest, "Black_Sheep6_d5.csv")) %>% 
-  dplyr::mutate(sheep = 6,
-                DOT = 5)
+path_HOBO_VFtest <- "W:/VF/Optimising_VF/raw_data/Waikerie/Raw_hobo_behav/Hobo_revised/"
+treatment <- "33%d1"
 
 
-HOBO_VFtest <- rbind(sheep1_1,
-                     sheep1_2,
-                     sheep2_1,
-                     sheep2_2,
-                     sheep3_1,
-                     sheep3_2,
-                     sheep4_1,
-                     sheep4_2,
-                     sheep5_1,
-                     sheep5_2,
-                     sheep6_1,
-                     sheep6_2)
-rm(sheep1_1,
-   sheep1_2,
-   sheep2_1,
-   sheep2_2,
-   sheep3_1,
-   sheep3_2,
-   sheep4_1,
-   sheep4_2,
-   sheep5_1,
-   sheep5_2,
-   sheep6_1,
-   sheep6_2)
+sheep1_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 1clip.csv")) %>% 
+  dplyr::mutate(sheep = 1,  day = 1)
+sheep9_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep 9 clip.csv")) %>% 
+  dplyr::mutate(sheep = 9,  day = 1)
+sheep12_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep 12clip.csv")) %>% 
+  dplyr::mutate(sheep = 12,  day = 1)
+sheep23_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep 23clip.csv")) %>% 
+  dplyr::mutate(sheep = 23,  day = 1)
+sheep25_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep 25clip.csv")) %>% 
+  dplyr::mutate(sheep = 25,  day = 1)
+sheep31_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep 31clip.csv")) %>% 
+  dplyr::mutate(sheep = 31,  day = 1)
+sheep32_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep 32clip.csv")) %>% 
+  dplyr::mutate(sheep = 32,  day = 1)
+sheep34_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep 34clip.csv")) %>% 
+  dplyr::mutate(sheep = 34,  day = 1)
+sheep11_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/", "Sheep11clip.csv")) %>% 
+  dplyr::mutate(sheep = 11,  day = 1)
 
-# "Blue_sheep_d3.csv"
-# "Green_sheep_d3.csv"
-# "Black_sheep_d3.csv"
-# "Orange_sheep_d3.csv"
-# "Red_sheep_d3.csv"
-# "Yellow_Sheep_d3.csv"
+sheep_day1_33_percent <- rbind(sheep1_1, sheep9_1, sheep12_1, sheep23_1, sheep25_1,sheep31_1, sheep32_1, sheep34_1, sheep11_1)
+rm(sheep1_1, sheep9_1, sheep12_1, sheep23_1, sheep25_1,sheep31_1, sheep32_1, sheep34_1, sheep11_1)
 
+treatment <- "33%d2"
+
+
+sheep1_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 1clip.csv")) %>% 
+  dplyr::mutate(sheep = 1,  day = 2)
+sheep34_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 34clip.csv")) %>% 
+  dplyr::mutate(sheep = 34,  day = 2)
+sheep9_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 9clip.csv")) %>% 
+  dplyr::mutate(sheep = 9,  day = 2)
+sheep11_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 11clip.csv")) %>% 
+  dplyr::mutate(sheep = 11,  day = 2)
+sheep12_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 12clip.csv")) %>% 
+  dplyr::mutate(sheep = 12,  day = 2)
+sheep23_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 23clip.csv")) %>% 
+  dplyr::mutate(sheep = 23,  day = 2)
+sheep25_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 25clip.csv")) %>% 
+  dplyr::mutate(sheep = 25,  day = 2)
+sheep31_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 31clip.csv")) %>% 
+  dplyr::mutate(sheep = 31,  day = 2)
+sheep32_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 32clip.csv")) %>% 
+  dplyr::mutate(sheep = 32,  day = 2)
+sheep34_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep 34clip.csv")) %>% 
+  dplyr::mutate(sheep = 34,  day = 2)
+sheep_day2_33_percent <- rbind(sheep1_2, sheep9_2, sheep12_2, sheep23_2, sheep25_2,sheep31_2, sheep32_2, sheep34_2, sheep11_2)
+rm(sheep1_2, sheep9_2, sheep12_2, sheep23_2, sheep25_2,sheep31_2, sheep32_2, sheep34_2, sheep11_2)
+
+Sheep33percent <-rbind(sheep_day1_33_percent,sheep_day2_33_percent)
+Sheep33percent <- Sheep33percent %>%  mutate(treatment = "33_percent")
+
+
+treatment <- "66%d1"
+
+sheep36_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep36clip.csv")) %>%   dplyr::mutate(sheep = 36,  day = 1)
+sheep7_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep7clip.csv")) %>%     dplyr::mutate(sheep = 7,  day = 1)
+sheep10_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep10clip.csv")) %>%     dplyr::mutate(sheep = 10,  day = 1)
+sheep15_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep15clip.csv")) %>%     dplyr::mutate(sheep = 15,  day = 1)
+sheep19_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep19clip.csv")) %>%     dplyr::mutate(sheep = 19,  day = 1)
+sheep21_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep21clip.csv")) %>%     dplyr::mutate(sheep = 21,  day = 1)
+sheep27_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep27clip.csv")) %>%     dplyr::mutate(sheep = 27,  day = 1)
+sheep28_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep28clip.csv")) %>%     dplyr::mutate(sheep = 28,  day = 1)
+sheep33_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep33clip.csv")) %>%     dplyr::mutate(sheep = 33,  day = 1)
+
+sheep_day1_66_percent <- rbind(sheep36_1, sheep7_1, sheep10_1,sheep15_1,sheep19_1,  sheep21_1, sheep27_1,  sheep28_1, sheep33_1)
+rm(sheep36_1, sheep7_1, sheep10_1,sheep15_1,sheep19_1,  sheep21_1, sheep27_1,  sheep28_1, sheep33_1)
+
+treatment <- "66%d2"
+
+sheep36_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep36clip.csv")) %>%   dplyr::mutate(sheep = 36,  day = 2)
+sheep7_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep7clip.csv")) %>%     dplyr::mutate(sheep = 7,  day = 2)
+sheep10_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep10clip.csv")) %>%     dplyr::mutate(sheep = 10,  day = 2)
+sheep15_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep15clip.csv")) %>%     dplyr::mutate(sheep = 15,  day = 2)
+sheep19_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep19clip.csv")) %>%     dplyr::mutate(sheep = 19,  day = 2)
+sheep21_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep21clip.csv")) %>%     dplyr::mutate(sheep = 21,  day = 2)
+sheep27_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep27clip.csv")) %>%     dplyr::mutate(sheep = 27,  day = 2)
+sheep28_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep28clip.csv")) %>%     dplyr::mutate(sheep = 28,  day = 2)
+sheep33_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep33clip.csv")) %>%     dplyr::mutate(sheep = 33,  day = 2)
+
+sheep_day2_66_percent <- rbind(sheep36_2, sheep7_2, sheep10_2,sheep15_2,sheep19_2,  sheep21_2, sheep27_2,  sheep28_2, sheep33_2)
+rm(sheep36_2, sheep7_2, sheep10_2,sheep15_2,sheep19_2,  sheep21_2, sheep27_2,  sheep28_2, sheep33_2)
+Sheep66percent <-rbind(sheep_day1_66_percent, sheep_day2_66_percent)
+Sheep66percent <- Sheep66percent %>%  mutate(treatment = "66_percent")
+
+treatment <- "100%d1"
+
+sheep35_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep35clip.csv")) %>%   dplyr::mutate(sheep = 35,  day = 1)
+sheep2_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep2clip.csv")) %>%   dplyr::mutate(sheep = 2,  day = 1)
+sheep3_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep3clip.csv")) %>%   dplyr::mutate(sheep = 3,  day = 1)
+sheep5_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep5clip.csv")) %>%   dplyr::mutate(sheep = 5,  day = 1)
+sheep13_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep13clip.csv")) %>%   dplyr::mutate(sheep = 13,  day = 1)
+sheep14_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep14clip.csv")) %>%   dplyr::mutate(sheep = 14,  day = 1)
+sheep17_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep17clip.csv")) %>%   dplyr::mutate(sheep = 17,  day = 1)
+sheep22_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep22clip.csv")) %>%   dplyr::mutate(sheep = 22,  day = 1)
+sheep30_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep30clip.csv")) %>%   dplyr::mutate(sheep = 30,  day = 1)
+
+sheep_day1_100_percent <- rbind(sheep35_1, sheep2_1, sheep3_1, sheep5_1, sheep13_1, sheep14_1, sheep17_1, sheep22_1, sheep30_1)
+rm(sheep35_1, sheep2_1, sheep3_1, sheep5_1, sheep13_1, sheep14_1, sheep17_1, sheep22_1, sheep30_1)
+
+treatment <- "100%d2"
+
+sheep35_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep35clip.csv")) %>%   dplyr::mutate(sheep = 35,  day = 2)
+sheep2_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep20clip.csv")) %>%   dplyr::mutate(sheep = 2,  day = 2)
+sheep3_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep3clip.csv")) %>%   dplyr::mutate(sheep = 3,  day = 2)
+sheep5_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep5clip.csv")) %>%   dplyr::mutate(sheep = 5,  day = 2)
+sheep13_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep13clip.csv")) %>%   dplyr::mutate(sheep = 13,  day = 2)
+sheep14_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep14clip.csv")) %>%   dplyr::mutate(sheep = 14,  day = 2)
+sheep17_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep17clip.csv")) %>%   dplyr::mutate(sheep = 17,  day = 2)
+sheep22_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep22clip.csv")) %>%   dplyr::mutate(sheep = 22,  day = 2)
+sheep30_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep30clip.csv")) %>%   dplyr::mutate(sheep = 30,  day = 2)
+
+sheep_day2_100_percent <- rbind(sheep35_2, sheep2_2, sheep3_2, sheep5_2, sheep13_2, sheep14_2, sheep17_2, sheep22_2, sheep30_2)
+rm(sheep35_1, sheep2_1, sheep3_1, sheep5_1, sheep13_1, sheep14_1, sheep17_1, sheep22_1, sheep30_1)
 
 ################################################################################
 ####   The date time clm looks suss the year is 2017 and the trial was 2018 ####
