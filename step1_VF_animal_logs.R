@@ -766,67 +766,76 @@ rm(sheep35_1, sheep2_1, sheep3_1, sheep5_1, sheep13_1, sheep14_1, sheep17_1, she
 
 treatment <- "100%d2"
 
+
 sheep35_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep35clip.csv")) %>%   dplyr::mutate(sheep = 35,  day = 2)
 sheep2_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep20clip.csv")) %>%   dplyr::mutate(sheep = 2,  day = 2)
 sheep3_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep3clip.csv")) %>%   dplyr::mutate(sheep = 3,  day = 2)
 sheep5_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep5clip.csv")) %>%   dplyr::mutate(sheep = 5,  day = 2)
-sheep13_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep13clip.csv")) %>%   dplyr::mutate(sheep = 13,  day = 2)
+#sheep13_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep13clip.csv")) %>%   dplyr::mutate(sheep = 13,  day = 2)
 sheep14_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep14clip.csv")) %>%   dplyr::mutate(sheep = 14,  day = 2)
 sheep17_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep17clip.csv")) %>%   dplyr::mutate(sheep = 17,  day = 2)
 sheep22_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep22clip.csv")) %>%   dplyr::mutate(sheep = 22,  day = 2)
 sheep30_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep30clip.csv")) %>%   dplyr::mutate(sheep = 30,  day = 2)
 
-sheep_day2_100_percent <- rbind(sheep35_2, sheep2_2, sheep3_2, sheep5_2, sheep13_2, sheep14_2, sheep17_2, sheep22_2, sheep30_2)
-rm(sheep35_1, sheep2_1, sheep3_1, sheep5_1, sheep13_1, sheep14_1, sheep17_1, sheep22_1, sheep30_1)
+sheep_day2_100_percent <- rbind(sheep35_2, sheep2_2, sheep3_2, sheep5_2, sheep14_2, sheep17_2, sheep22_2, sheep30_2) # missing this file sheep13_2,
+rm(sheep35_1, sheep2_1, sheep3_1, sheep5_1,  sheep14_1, sheep17_1, sheep22_1, sheep30_1)
 
+Sheep100percent <-rbind(sheep_day1_100_percent, sheep_day2_100_percent)
+Sheep100percent <- Sheep100percent %>%  mutate(treatment = "100_percent")
+
+treatment <- "Controlsd1"
+
+sheep29_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep29clip.csv")) %>%   dplyr::mutate(sheep = 29,  day = 1)
+sheep4_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep4clip.csv")) %>%   dplyr::mutate(sheep = 4,  day = 1)
+sheep8_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep8clip.csv")) %>%   dplyr::mutate(sheep = 8,  day = 1)
+sheep20_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep20clip.csv")) %>%   dplyr::mutate(sheep = 20,  day = 1)
+sheep24_1 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep24clip.csv")) %>%   dplyr::mutate(sheep = 24,  day = 1)
+
+sheep_day1_control <- rbind(sheep29_1, sheep4_1, sheep8_1, sheep20_1, sheep24_1) 
+rm(sheep29_1, sheep4_1, sheep8_1, sheep20_1, sheep24_1)
+
+treatment <- "Controlsd2"
+
+sheep29_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep29clip.csv")) %>%   dplyr::mutate(sheep = 29,  day = 2)
+sheep4_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep4clip.csv")) %>%   dplyr::mutate(sheep = 4,  day = 2)
+sheep8_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep8clip.csv")) %>%   dplyr::mutate(sheep = 8,  day = 2)
+sheep20_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep20clip.csv")) %>%   dplyr::mutate(sheep = 20,  day = 2)
+sheep24_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep24clip.csv")) %>%   dplyr::mutate(sheep = 24,  day = 2)
+sheep18_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep18clip.csv")) %>%   dplyr::mutate(sheep = 18,  day = 2)
+sheep26_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep26clip.csv")) %>%   dplyr::mutate(sheep = 26,  day = 2)
+sheep6_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep6clip.csv")) %>%   dplyr::mutate(sheep = 6,  day = 2)
+sheep13_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep13clip.csv")) %>%   dplyr::mutate(sheep = 13,  day = 2)
+
+sheep_day2_control <- rbind(sheep29_2, sheep4_2, sheep8_2, sheep20_2, sheep24_2, sheep18_2, sheep26_2,sheep6_2,  sheep13_2) 
+rm(sheep29_2, sheep4_2, sheep8_2, sheep20_2, sheep24_2, sheep18_2, sheep26_2,sheep6_2,  sheep13_2)
+
+
+Sheep_control <-rbind(sheep_day1_control, sheep_day2_control)
+Sheep_control <- Sheep_control %>%  mutate(treatment = "control")
+
+
+Hobo_trial_data <- rbind(Sheep_control, Sheep100percent, Sheep66percent, Sheep33percent)
+str(Hobo_trial_data)
 ################################################################################
 ####   The date time clm looks suss the year is 2017 and the trial was 2018 ####
 ### I am going to use the time out of this clm and assume its local time ??? ###
 ################################################################################
 
-str(HOBO_VFtest)
+str(Hobo_trial_data)
 
-HOBO_VFtest_1 <- HOBO_VFtest
-HOBO_VFtest_1 <-  HOBO_VFtest_1 %>% separate(`Date Time`, into = c("dummy_date", "local_time"), sep=" ", remove=FALSE)
-HOBO_VFtest_1 <-  HOBO_VFtest_1 %>% separate(local_time, into = c("test1", "test2", "test3"), sep=":")
+HOBO_VFtest_1 <- Hobo_trial_data
+
+HOBO_VFtest_1$`Date Time` <- as.POSIXct(HOBO_VFtest_1$`Date Time`, format="%d/%m/%Y %H:%M:%S")
 str(HOBO_VFtest_1)
-
-HOBO_VFtest_1$test3 <- as.double(HOBO_VFtest_1$test3)
-HOBO_VFtest_1 <- HOBO_VFtest_1 %>% 
-  mutate(local_time = paste0(test1, ":", test2,":", test3))
-
-## add a real date
-
-HOBO_VFtest_1 <-  HOBO_VFtest_1 %>%
-  mutate(
-    date = case_when(
-      DOT == 1 ~ "13/03/2018",
-      DOT == 2 ~ "14/03/2018",
-      DOT == 3 ~ "15/03/2018",
-      DOT == 4 ~ "16/03/2018",
-      ))
-
-HOBO_VFtest_1 <-  HOBO_VFtest_1 %>%
-  mutate(date_time = paste0(date," ", local_time))
-
-HOBO_VFtest_1$date_time <- as.POSIXct(HOBO_VFtest_1$date_time, format="%d/%m/%Y %H:%M:%S")
-
 ## remove dummy clm and rows with no data
-
-str(HOBO_VFtest_1)
-HOBO_VFtest_1 <- HOBO_VFtest_1 %>%  dplyr::select(-test1, 
-                                                  -test2,
-                                                  -test3,
-                                                  -dummy_date)
-HOBO_VFtest_1 <- HOBO_VFtest_1 %>% filter(!is.na(date_time))
 
 
 
 ## write out the file in CSV format
-write.csv(HOBO_PreVF,row.names = FALSE,
-          file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PreVF.csv")
-write.csv(HOBO_PostVF,row.names = FALSE,
-          file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PostVF.csv")
+# write.csv(HOBO_PreVF,row.names = FALSE,
+#           file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PreVF.csv")
+# write.csv(HOBO_PostVF,row.names = FALSE,
+#           file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_PostVF.csv")
 write.csv(HOBO_VFtest_1,row.names = FALSE,
           file = "W:/VF/Optimising_VF/Waikerie/data_prep/HOBO_VFtest.csv")
 
