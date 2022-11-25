@@ -164,7 +164,7 @@ output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  #animals_GPS_trim_time
 ### format the aniaml log data so I output the clm with local time and keep time difference cals and have clm for x and y
 
 ## convert the geom clm into x and y clms
-
+str(GPS_trim_time)
 
 coordinates <-as.data.frame( st_coordinates(GPS_trim_time))
 GPS_trim_time_df <- as.data.frame(GPS_trim_time)
