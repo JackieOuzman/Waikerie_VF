@@ -3,7 +3,7 @@
 #https://cran.r-project.org/web/packages/amt/vignettes/p1_getting_started.html
 
 # amt 
-install.packages("amt")
+#install.packages("amt")
 
 library(dplyr)
 library(ggplot2)
@@ -159,3 +159,9 @@ trk2a <- trk2 %>% select(id, steps) %>% unnest(cols = steps)
 
 trk2 %>% select(id, steps) %>% unnest(cols = steps) %>% 
   ggplot(aes(sl_, fill = factor(id))) + geom_density(alpha = 0.4)
+
+test <- trk2 %>% select(id, steps) %>% unnest(cols = steps)
+
+print(test)
+getwd()
+write.csv(test,"C:/Users/ouz001/working_from_home_post_Sep2022/Waikerie_VF/amt_tut_step_lenghth.csv" )
