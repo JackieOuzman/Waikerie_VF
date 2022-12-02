@@ -37,6 +37,11 @@ hard_fence_bound <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Bo
 VF <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Boundary_VF_paddock.shp")
 
 exclusion_zone <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Exclusion_zone.shp")
+exclusion_zone <-   st_as_sf(exclusion_zone,
+                         coords = c("X", "Y"),
+                         crs = 28354,
+                         agr = "constant")
+
 
 VF_line <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/VFLine28m on line.shp")
 
@@ -66,9 +71,19 @@ GPS_sheep2 <- GPS_sheep2 %>%
   dplyr::mutate(dist_to_VF = st_distance(GPS_sheep2, VF_line))
 ############################################################################################
 ### report if the point is in the exclusion zone
+
+### --- stuck here point inside polygon and points outside polygon.
+#need to make a new clm for location in paddock
 dim(GPS_sheep2)
 dim(VF_points)
 
 VF <- VF %>%  dplyr::select(Id, geometry)
-VF_points <- st_join(VF, GPS_sheep2)
-VF_points
+
+VF_points <-  st_intersection(GPS_sheep2, VF)
+Exclusion_points <-  st_intersection(GPS_sheep2, exclusion_zone)
+dim(GPS_sheep2)
+dim(VF_points)
+dim(VF_points)
+
+
+st_contains(x, y, ...)
