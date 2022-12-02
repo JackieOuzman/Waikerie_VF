@@ -60,8 +60,7 @@ GPS %>% distinct(sheep)  ### 26 sheep ID I need regular time interval for each s
 #regular_time_interval_per_sheep_ID 
 
 regular_time_interval <- regular_time_interval %>% 
-  dplyr::mutate(sheep = 2,
-                Time_sheep = paste0(time_step,"_", sheep))
+  dplyr::mutate(Time_sheep = paste0(time_step,"_", 2))
 
 
 ################################################################################
@@ -77,13 +76,22 @@ GPS <- GPS %>%
 ################################################################################
 #### --------------    Join regular time step to dataset  -------------- ####
 ################################################################################
+#For all joins, rows will be duplicated if one or more rows in x matches multiple rows in y.
+# Need to deal with duplicates before joining the data.
+
+
 
 GPS_sheep2 <- GPS %>%  filter(sheep == 2)
+GPS_sheep2 <- GPS_sheep2 %>% 
+  dplyr::distinct(Time_sheep, .keep_all = TRUE) # this is where you could do other options group_by average, max ??
+str(GPS_sheep2)
+
+str(regular_time_interval) 
 
 
-test_join <- left_join(regular_time_interval, GPS_sheep2, by = c("Time_sheep" = "Time_sheep"))
+test_join <- left_join(regular_time_interval, GPS_sheep2)
 
-#--- comment here if I have multiple rows for the same 10 mins this method only hangs onto the first row that matches.
+#--- comment here if I have multiple rows for the same 10 mins this method only hangs onto the first row that matches (due to removing duplictae step).
 #--- This is not ideal but is similar to what the newer collars do.
 #--- an option could be to have a smaller time step and then do the calculations that are needed. 
 #--- Say distance from the fence or number of steps.
@@ -110,12 +118,11 @@ df <- test_join %>%
 
 
 ################################################################################
-#### --------------             Do some cals                 -------------- ####
+#### Do some cals  steps or distance travelled since last logged point ---- ####
 ################################################################################
-## --- work out how the lag function works
-#SQRT(Power(lagx - x ,2)+ Power lagY - Y, 2))
-#Maybe make a super simple data to practice on the order may need to be consisder
-str(df)
+df <- df %>% 
+  arrange(local_time)
 
-df <- mutate(df, previous_year_value = lag(X, order_by = round_local_time))
-arrange(right, year)
+
+df <- df %>% 
+  dplyr::mutate(step = sqrt( ((lead(X) - X)^ 2) + ((lead(Y) - Y)^ 2) ) )
