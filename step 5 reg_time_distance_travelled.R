@@ -67,6 +67,11 @@ GPS_Dist <- GPS_Dist %>%
 
 rm(end,start, time.duration, time.interval)
 
+
+###############################################################################  
+## ----- function to produce steps per animal
+################################################################################
+
 sheep_list <- GPS_Dist %>% distinct(sheep) %>%  arrange(sheep)
 ### 26 sheep ID I need regular time interval for each sheep
 ### List of sites I want to run analysis for:
