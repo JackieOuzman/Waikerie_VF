@@ -128,6 +128,8 @@ df <- df %>%
   dplyr::mutate(step = sqrt( ((lead(X) - X)^ 2) + ((lead(Y) - Y)^ 2) ) )
 
 
+str(df)
+
 
 ##### Think about how to deal with yarding times - I think you may need to remove first step cal after yarding time.
 
