@@ -11,7 +11,7 @@ library(sf)
 
 
 
-GPS <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/animal_GPS_data_step1_2_3.csv")
+GPS <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step3_clip.csv")
 
 #turn into spatial data
 GPS <-   st_as_sf(GPS,
@@ -114,7 +114,7 @@ GPS_all_df <-   cbind(GPS_all_df,coordinates )
 path_output_files <- "W:/VF/Optimising_VF/Waikerie/data_prep/" 
 path_output_files
 write.csv(GPS_all_df, 
-          paste0(path_output_files,"/GPS_all_dist_line_VF_zone_test.csv"), 
+          paste0(path_output_files,"/step4_dist_line_VF_zone.csv"), 
           row.names=FALSE)
 
 

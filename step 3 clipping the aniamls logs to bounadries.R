@@ -28,7 +28,7 @@ VF <- st_read("W:/VF/Optimising_VF/raw_data/Waikerie/BoundaryV2/Boundary_VF_padd
 
 
 
-step1_2 <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/animals_GPS_trim_time_step1.csv")
+step1_2 <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/Step1b_animals_GPS_trim_time.csv")
 
 #turn into spatial data
 step1_2_sf <-   st_as_sf(step1_2,
@@ -78,5 +78,5 @@ step1_2_sf_clip_df <-   cbind(step1_2_sf_clip_df,coordinates )
 path_output_files <- "W:/VF/Optimising_VF/Waikerie/data_prep/" 
 path_output_files
 write.csv(step1_2_sf_clip_df, 
-          paste0(path_output_files,"/animal_GPS_data_step1_2_3.csv"), 
+          paste0(path_output_files,"/step3_clip.csv"), 
           row.names=FALSE)

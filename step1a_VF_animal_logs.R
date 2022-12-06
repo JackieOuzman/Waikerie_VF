@@ -650,7 +650,7 @@ rm(Waikerie_all_sf )
 
 ## write out the file in CSV format
 write.csv(Waikerie_all,row.names = FALSE,
-          file = "W:/VF/Optimising_VF/Waikerie/data_prep/GPS_cood_step_1a.csv")
+          file = "W:/VF/Optimising_VF/Waikerie/data_prep/step1a_GPS_cood.csv")
  
 
 
@@ -816,9 +816,6 @@ Sheep_control <- Sheep_control %>%  mutate(treatment = "control")
 
 Hobo_trial_data <- rbind(Sheep_control, Sheep100percent, Sheep66percent, Sheep33percent)
 str(Hobo_trial_data)
-################################################################################
-####   The date time clm looks suss the year is 2017 and the trial was 2018 ####
-### I am going to use the time out of this clm and assume its local time ??? ###
 ################################################################################
 
 str(Hobo_trial_data)

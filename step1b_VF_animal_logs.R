@@ -20,7 +20,7 @@ library(sf)
 
 path_step1 <- "W:/VF/Optimising_VF/Waikerie/data_prep/"
 
-GPS <- read_csv(paste0(path_step1, "GPS_cood_step_1a.csv")) 
+GPS <- read_csv(paste0(path_step1, "step1a_GPS_cood.csv")) 
 HOBO <- read_csv(paste0(path_step1, "HOBO_VFtest.csv")) 
 Behavioural <- read_csv(paste0(path_step1, "Behavioural.csv")) 
 
@@ -184,7 +184,7 @@ GPS_trim_time$end_fence    <- format(GPS_trim_time$end_fence, usetz=TRUE)
 GPS_trim_time$start_trial    <- format(GPS_trim_time$start_trial, usetz=TRUE)
 
 write.csv(GPS_trim_time, 
-          paste0(output_path,"/animals_GPS_trim_time_step1.csv"), 
+          paste0(output_path,"/Step1b_animals_GPS_trim_time.csv"), 
           row.names=FALSE)
 #############################################################
 

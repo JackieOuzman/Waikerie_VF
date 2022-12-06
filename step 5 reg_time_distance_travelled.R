@@ -17,7 +17,7 @@ library(sf)
 #### --------------    Bring in data   -------------- ####
 ################################################################################
 
-GPS_Dist <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/GPS_all_dist_line_VF_zone_test.csv")
+GPS_Dist <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step4_dist_line_VF_zone.csv")
 names(GPS_Dist)
 
 ### subset the data to the clms I want.
@@ -131,7 +131,33 @@ for (sheep_list in sheep_list){
   }       
 
 file_list <- data.frame(name_df = paste0("GPS_sheep_reg_time_step",c(1:36)))
-                
+
+#0 observation for 19 - why - looks like the data is out of range
+# GPS_sheep_19_check <- GPS_Dist %>%  filter(sheep == 19)
+# GPS_sheep_19_check <- GPS_sheep_19_check %>% 
+#   dplyr::distinct(Time_sheep, .keep_all = TRUE) 
+# 
+# regular_time_interval_sheep19 <- regular_time_interval %>% 
+#   dplyr::mutate(Time_sheep = paste0(time_step,"_", 19))
+# 
+# GPS_sheep19_reg_time <- left_join(regular_time_interval_sheep19, GPS_sheep_19_check)
+# 
+# #### Trim the regular time step to match the end of sheep time
+# 
+# start_sheep <- min(GPS_sheep_19_check$local_time, na.rm = TRUE)  
+# end_sheep <-   max(GPS_sheep_19_check$local_time, na.rm = TRUE) 
+# start_sheep <- round_date(start_sheep, unit="10 mins") # 2018-03-16 09:40:00 ACDT
+# end_sheep <- round_date(end_sheep, unit="10 mins")     # 2018-03-16 15:30:00 ACDT"           
+# 
+# ## trim the joined data to the sheeps ID time in the trial 
+# 
+# 
+# GPS_sheep19_reg_time <- GPS_sheep19_reg_time %>% 
+#   dplyr::filter(between(local_time, ymd_hms(start_sheep), ymd_hms(end_sheep)))  
+
+
+
+
 GPS_sheep_reg_time_step_all <- rbind(
   GPS_sheep_reg_time_step1,
   GPS_sheep_reg_time_step2,
@@ -227,5 +253,5 @@ output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  #animals_GPS_trim_time
 
 
 write.csv(GPS_sheep_reg_time_step_all, 
-          paste0(output_path,"/GPS_sheep_all_reg_time_step_dist.csv"), 
+          paste0(output_path,"/step5_Greg_time_step_dist_travelled.csv"), 
           row.names=FALSE)

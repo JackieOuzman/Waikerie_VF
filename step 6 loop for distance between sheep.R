@@ -4,7 +4,7 @@ library(readr)
 library(lubridate)
 
   
-GPS_Sheep <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/GPS_sheep_all_reg_time_step_dist.csv") 
+GPS_Sheep <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step5_Greg_time_step_dist_travelled.csv") 
 GPS_Sheep$local_time <- as.POSIXct(GPS_Sheep$local_time,  tz = "Australia/Adelaide")          
 GPS_Sheep$time_step <- as.POSIXct(GPS_Sheep$time_step,  tz = "Australia/Adelaide") 
 
@@ -228,10 +228,10 @@ for (sheep_list in sheep_list){
 }    
 
 
-#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/dist_between_animals_matrix_100percent.csv")
-#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/dist_between_animals_matrix_33percent.csv")
-#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/dist_between_animals_matrix_control.csv")
-write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/dist_between_animals_matrix_66.csv")
+#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_100percent.csv")
+#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_33percent.csv")
+#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_control.csv")
+write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_66.csv")
 
 
 ### missing number 19 not sure why?
