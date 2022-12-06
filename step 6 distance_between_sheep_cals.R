@@ -21,7 +21,7 @@ reg_time_step <- GPS_Sheep %>%
 ## ----- function to produce distance between animal matrix
 ################################################################################
 
-sheep_list <- GPS_Dist %>% distinct(sheep) %>%  arrange(sheep)
+sheep_list <- GPS_Sheep %>% distinct(sheep) %>%  arrange(sheep)
 sheep_list <- c(1:36)
 #sheep_list <- c(1:3)
 
