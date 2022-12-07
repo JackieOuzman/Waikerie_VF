@@ -33,20 +33,21 @@ df <- data.frame(reg_time_step=POSIXct(),
 
 
 ### ---- for treatment = 66 % for sheep7 ----####
-#sheep <- "7"
-#sheep <- "10"
+#list_of_sheep <- "7"
+#list_of_sheep <- "10"
 list_of_sheep <- c("7","10")
 
 
 
 ### loop use a list of sheep as a variable to create a list and the list becomes the input for the loop
-#for (list_of_sheep in list_of_sheep){
+for (list_of_sheep in list_of_sheep){
   
-sheep_list_df_x <- list_of_comparsions %>%  filter(sheep == list_of_sheep[[1]]) %>% select(comparsions)
+#sheep_list_df_x <- list_of_comparsions %>%  filter(sheep == list_of_sheep[[1]]) %>% select(comparsions)
+sheep_list_df_x <- list_of_comparsions %>%  filter(sheep == list_of_sheep) %>% select(comparsions)
 sheep_list_x <- as.list(sheep_list_df_x)
 sheep_list_comparisonx <- c(sheep_list_x$comparsions)
   #sheep_list_comparisonx <- "dist10vs7"
-  
+names(matrix_66percent) 
 sheep_x <-   matrix_66percent %>%  dplyr::select(all_of(sheep_list_comparisonx)) #remove the time step and only select clms that relate to the sheep
 
 sheep_x[sheep_x > Min_dist] <- NA #replace values >1.5 with NA
@@ -61,13 +62,14 @@ sheep_matrix <- cbind(sheep_matrix, sheep_x)
 
 sheep_matrix <- sheep_matrix %>%
   rename(!!paste0(paste0("numb_sheep_close")) := count) %>% 
-  mutate(sheep = list_of_sheep[[1]])
+  mutate(sheep = list_of_sheep)
+  #mutate(sheep = list_of_sheep[[1]])
 
 df_temp = left_join(reg_time_step, sheep_matrix)
 
 df <- rbind(df, df_temp) 
 
-#}    
+}    
 
 
 
