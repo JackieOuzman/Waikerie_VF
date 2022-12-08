@@ -22,7 +22,8 @@ list_of_comparsions <- read_excel("W:/VF/Optimising_VF/Waikerie/data_prep/list o
 #list_of_comparsions <- list_of_comparsions %>%  filter(is.na(replication)) 
 list_of_comparsions <- list_of_comparsions %>%  filter(is.na(problem))
 
-list_of_comparsions_x <- list_of_comparsions %>%  filter(treatment == "control") 
+##---- select---###
+list_of_comparsions_x <- list_of_comparsions %>%  filter(treatment == "0.66") 
 sheep_list_x <- list_of_comparsions_x
 
 
