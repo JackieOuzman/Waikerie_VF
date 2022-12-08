@@ -19,11 +19,11 @@ df <- reg_time_step %>%  arrange(time_step)
 list_of_comparsions <- read_excel("W:/VF/Optimising_VF/Waikerie/data_prep/list of animal comparisons.xlsx", 
                                   sheet = "dist_between_animals")
 
-list_of_comparsions <- list_of_comparsions %>%  filter(is.na(replication)) 
+#list_of_comparsions <- list_of_comparsions %>%  filter(is.na(replication)) 
 list_of_comparsions <- list_of_comparsions %>%  filter(is.na(problem))
 
-list_of_comparsions_100 <- list_of_comparsions %>%  filter(treatment == "0.66") 
-sheep_list_x <- list_of_comparsions_100
+list_of_comparsions_x <- list_of_comparsions %>%  filter(treatment == "control") 
+sheep_list_x <- list_of_comparsions_x
 
 
 
