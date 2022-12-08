@@ -15,46 +15,57 @@ reg_time_step <- GPS_Sheep %>%
   distinct(time_step)
 df <- reg_time_step %>%  arrange(time_step)
 
+
+list_of_comparsions <- read_excel("W:/VF/Optimising_VF/Waikerie/data_prep/list of animal comparisons.xlsx", 
+                                  sheet = "dist_between_animals100")
+##sheep 19 has no data so remove it
+list_of_comparsions <- list_of_comparsions %>%  filter(is.na(replication)) 
+
+sheep_list <- as.list(list_of_comparsions)
+sheep_list <- c(sheep_list$comparison)
+
+
+
 #for treatment = 100 % 
-sheep_list <- c("2vs3",
-               "3vs2",
-               "5vs2",
-               "13vs2",
-               "14vs2",
-               "17vs2",
-               "22vs2",
-               "30vs2",
-               "35vs2",
-               "3vs2",
-               "5vs2",
-               "13vs2",
-               "14vs2",
-               "17vs2",
-               "22vs2",
-               "30vs2",
-               "35vs2",
-               "13vs5",
-               "14vs5",
-               "17vs5",
-               "22vs5",
-               "30vs5",
-               "35vs5",
-               "14vs13",
-               "17vs13",
-               "22vs13",
-               "30vs13",
-               "35vs13",
-               "17vs14",
-               "22vs14",
-               "30vs14",
-               "35vs14",
-               "22vs17",
-               "30vs17",
-               "35vs17",
-               "30vs22",
-               "35vs22",
-               "35vs30"
-)
+# sheep_list <- c("2vs3",
+#                "3vs2",
+#                "5vs2",
+#                "13vs2",
+#                "14vs2",
+#                "17vs2",
+#                "22vs2",
+#                "30vs2",
+#                "35vs2",
+#                "3vs2",
+#                "5vs2",
+#                "13vs2",
+#                "14vs2",
+#                "17vs2",
+#                "22vs2",
+#                "30vs2",
+#                "35vs2",
+#                "13vs5",
+#                "14vs5",
+#                "17vs5",
+#                "22vs5",
+#                "30vs5",
+#                "35vs5",
+#                "14vs13",
+#                "17vs13",
+#                "22vs13",
+#                "30vs13",
+#                "35vs13",
+#                "17vs14",
+#                "22vs14",
+#                "30vs14",
+#                "35vs14",
+#                "22vs17",
+#                "30vs17",
+#                "35vs17",
+#                "30vs22",
+#                "35vs22",
+#                "35vs30"
+# )
 
 
 #for treatment = 33 % 
