@@ -77,7 +77,7 @@ sheep_list <- GPS_Dist %>% distinct(sheep) %>%  arrange(sheep)
 ### List of sites I want to run analysis for:
 
 sheep_list <- c(1:36)
-#sheep_list <- c(1:2)
+#sheep_list <- 2
 
 ### as a function
 for (sheep_list in sheep_list){
@@ -107,9 +107,10 @@ for (sheep_list in sheep_list){
   
   ## trim the joined data to the sheeps ID time in the trial 
   
-  
+  #names(GPS_sheep_reg_time)
   GPS_sheep_reg_time <- GPS_sheep_reg_time %>% 
-    dplyr::filter(between(local_time, ymd_hms(start_sheep), ymd_hms(end_sheep)))  
+    dplyr::filter(between(time_step, ymd_hms(start_sheep), ymd_hms(end_sheep))) 
+ 
   
   ################################################################################
   #### Do some cals  steps or distance travelled since last logged point ---- ####
@@ -132,28 +133,7 @@ for (sheep_list in sheep_list){
 
 file_list <- data.frame(name_df = paste0("GPS_sheep_reg_time_step",c(1:36)))
 
-#0 observation for 19 - why - looks like the data is out of range
-# GPS_sheep_19_check <- GPS_Dist %>%  filter(sheep == 19)
-# GPS_sheep_19_check <- GPS_sheep_19_check %>% 
-#   dplyr::distinct(Time_sheep, .keep_all = TRUE) 
-# 
-# regular_time_interval_sheep19 <- regular_time_interval %>% 
-#   dplyr::mutate(Time_sheep = paste0(time_step,"_", 19))
-# 
-# GPS_sheep19_reg_time <- left_join(regular_time_interval_sheep19, GPS_sheep_19_check)
-# 
-# #### Trim the regular time step to match the end of sheep time
-# 
-# start_sheep <- min(GPS_sheep_19_check$local_time, na.rm = TRUE)  
-# end_sheep <-   max(GPS_sheep_19_check$local_time, na.rm = TRUE) 
-# start_sheep <- round_date(start_sheep, unit="10 mins") # 2018-03-16 09:40:00 ACDT
-# end_sheep <- round_date(end_sheep, unit="10 mins")     # 2018-03-16 15:30:00 ACDT"           
-# 
-# ## trim the joined data to the sheeps ID time in the trial 
-# 
-# 
-# GPS_sheep19_reg_time <- GPS_sheep19_reg_time %>% 
-#   dplyr::filter(between(local_time, ymd_hms(start_sheep), ymd_hms(end_sheep)))  
+
 
 
 
