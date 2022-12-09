@@ -15,7 +15,7 @@ library(sf)
 #### --------------    Bring in data   -------------- ####
 ################################################################################
 
-all_animals <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step5_Greg_time_step_dist_travelled.csv")
+
 names(all_animals)
 all_animals <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step5_Greg_time_step_dist_travelled.csv")
 
