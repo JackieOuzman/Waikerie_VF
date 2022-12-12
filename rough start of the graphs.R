@@ -5,6 +5,15 @@ str(percent100)
 # change the order 
 
 percent100$herd_postion <- factor(percent100$herd_postion, levels = c("leader", "herd", "follower"))
+str(percent100)
+### how many times did the animal go over the VF into the exlusiin zone?
+
+inside_VF <- percent100 %>% group_by(DOY, VF_EX, sheep) %>% summarise(records = n())
+
+
+
+
+
 
 
 percent100 %>% 
