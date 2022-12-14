@@ -15,34 +15,82 @@ all_animals$local_time <- as.POSIXct(all_animals$local_time,  tz = "Australia/Ad
 
 
 
+
 ################################################################################
-####    remove the animals tha dont have collars     ###########################
+####    remove the animals tha don't have collars     ###########################
 ################################################################################
 
 list_of_sheep_VF <- c(2,3,5,13,17,22,30,35,
                       12,23,25,
                       10,15,21,27,33,36)
 
-all_animals_collars <- all_animals %>% filter(sheep == list_of_sheep_VF)
-str(all_animals_collars)
-all_animals_collars %>%  group_by(treatment) %>% distinct(sheep) %>% arrange(treatment  )
+
+all_animals_collars <- all_animals %>%  filter( sheep %in% list_of_sheep_VF)
+
+
+
 
 ###############################################################################
 #### create a ID varaible if the animal is in the exclusion zone or not  #####
-### prehaps something like time spent in the VF ####
+### perhaps something like time spent in the VF ####
+
+
+
+count_VF_occurance_per_animal <- all_animals_collars %>%  group_by( sheep, VF_EX) %>% 
+  summarise(count_records = n())
+count_VF_occurance_per_animal
+
+#express as a percentage
+
+
+count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal %>% 
+  pivot_wider(names_from = VF_EX, 
+              values_from = count_records)
+
+#replace NA values with zero
+count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal_wide %>% dplyr::mutate(outside_VF = replace_na(outside_VF, 0))
+count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal_wide %>% dplyr::mutate(inside_VF  = replace_na(inside_VF , 0))
+
+
+#sum of total counts
+
+count_VF_occurance_per_animal_wide <-count_VF_occurance_per_animal_wide %>% 
+  dplyr::mutate(total_counts = inside_VF + outside_VF,
+                prop_exclusion_zone = outside_VF /total_counts) %>% 
+  arrange(sheep )
+
+
+### turn the time spent in exclusion zone into categorical data.
+
+count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal_wide %>% 
+  dplyr::mutate(compliance_score =
+    case_when(prop_exclusion_zone == 0 ~ "compliant",
+              prop_exclusion_zone > 0 ~ "non_compliant"))
+
+sheep_compliance_score <- count_VF_occurance_per_animal_wide %>% dplyr::select(sheep, compliance_score)
+
+rm(all_animals, count_VF_occurance_per_animal, count_VF_occurance_per_animal_wide, list_of_sheep_VF)
+
+
+#### join sheep_compliance_score to the original dataset.
 str(all_animals_collars)
-all_animals_collars$VF_EX <- as.factor(all_animals_collars$VF_EX )
-unique(all_animals$VF_EX)
+all_animals_collars <- left_join(all_animals_collars, sheep_compliance_score)
 
 
+rm(sheep_compliance_score)
 
-### this is not working like i want it to
-test <- all_animals_collars %>%  group_by(sheep, VF_EX, date) %>% 
-  summarise(VF_EX = n())
+###################################################################################
+###                 write out df ready for the next step                      ###
+###################################################################################
 
-unique(all_animals$VF_EX)
+output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  
 
-control <- all_animals %>%  filter(treatment == "control")
-percent33 <- all_animals %>%  filter(treatment == "33_percent")
-percent100 <- all_animals %>%  filter(treatment == "100_percent")
-percent66 <- all_animals %>%  filter(treatment == "66_percent")
+write.csv(all_animals_collars, 
+          paste0(output_path,"/step8_all_animals_collars.csv"), 
+          row.names=FALSE)
+###################################################################################
+### condense the data so it can be simply used in RF model - one row per sheep  ###
+###################################################################################
+
+
+)
