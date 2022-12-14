@@ -1,0 +1,50 @@
+---
+title: "Waikerie Sheep VF optimisation"
+author: "Jackie"
+date: "2022-12-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r packages}
+library(dplyr)
+library(tidyverse)
+library(readr)
+library(lubridate)
+library(DT)
+library(sp)
+#install.packages("sf")
+library(sf)
+##########################
+```
+
+## Treatments
+By treatments first look
+
+
+
+```{r bring in data, echo=FALSE}
+all_animals <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step5b_Greg_time_step_dist_travelled.csv")
+
+all_animals$local_time <- as.POSIXct(all_animals$local_time,  tz = "Australia/Adelaide")
+
+unique(all_animals$treatment)
+
+control <- all_animals %>%  filter(treatment == "control")
+percent33 <- all_animals %>%  filter(treatment == "33_percent")
+percent100 <- all_animals %>%  filter(treatment == "100_percent")
+percent66 <- all_animals %>%  filter(treatment == "66_percent")
+
+```
+
+
+
+```{r filter data by treatmnets, echo=FALSE}
+all_animals
+
+```

@@ -6,13 +6,23 @@ str(percent100)
 
 percent100$herd_postion <- factor(percent100$herd_postion, levels = c("leader", "herd", "follower"))
 str(percent100)
-### how many times did the animal go over the VF into the exlusiin zone?
+### how many times did the animal go over the VF into the exlusion zone?
 
-inside_VF <- percent100 %>% group_by(DOY, VF_EX, sheep) %>% summarise(records = n())
+inside_VF <- percent100 %>% group_by(DOY, VF_EX, sheep, herd_postion) %>% summarise(records = n())
+inside_VF$DOY <- as.factor(inside_VF$DOY)
+inside_VF <- inside_VF %>% arrange(DOY, herd_postion)
+
+inside_VF %>% 
+  ggplot(aes(x=sheep , y=records, fill = DOY)) +
+  geom_col(position = "dodge")+
+  facet_wrap(.~herd_postion)+
+  theme_bw()+
+  labs(title = "Treatmnet 100%",
+       y=  "Records of inside the VF",
+       x = "Sheep ID")
 
 
-
-
+#############################################################################
 
 
 
