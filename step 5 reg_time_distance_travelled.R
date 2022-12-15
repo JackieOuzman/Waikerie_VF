@@ -61,8 +61,8 @@ str(GPS_Dist)
 # Need to round the local time to the closest 10 min
 GPS_Dist <- GPS_Dist %>% 
   dplyr::mutate(round_local_time =round_date(local_time, unit="10 mins"),
-                Time_sheep = paste0(round_local_time,"_", sheep) )
-
+                Time_sheep = paste0(round_local_time,"_", sheep) ,
+                Time_sheep_zone = paste0(round_local_time,"_", sheep, "_", VF_EX))
 
 
 rm(end,start, time.duration, time.interval)
@@ -94,7 +94,26 @@ for (sheep_list in sheep_list){
   
   GPS_sheep <- GPS_Dist %>%  filter(sheep == sheep_list)
   GPS_sheep <- GPS_sheep %>% 
-    dplyr::distinct(Time_sheep, .keep_all = TRUE)              
+    #dplyr::distinct(Time_sheep, .keep_all = TRUE) #remove this line so I get the records that the animals went over the VF            
+    dplyr::distinct(Time_sheep_zone, .keep_all = TRUE)
+  
+  ## the occurrence of a duplicated time_sheep
+  
+  duplication_report <- GPS_sheep %>% count(Time_sheep)
+  
+  GPS_sheep <- left_join(GPS_sheep,duplication_report ) %>% rename(occurance = n )
+  str(GPS_sheep)
+  
+  GPS_sheep <- GPS_sheep %>% mutate(
+    what_to_retain = case_when(
+      occurance == 2 & VF_EX == "outside_VF" ~ "retain",
+      occurance == 1 & VF_EX == "inside_VF" ~ "retain",
+      TRUE                      ~ "discard"
+    )
+  ) 
+  
+  # remove the rows tp discard
+  GPS_sheep <- GPS_sheep %>% filter(what_to_retain == "retain")
   
   GPS_sheep_reg_time <- left_join(regular_time_interval_sheep, GPS_sheep)
 
@@ -235,3 +254,36 @@ output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  #animals_GPS_trim_time
 write.csv(GPS_sheep_reg_time_step_all, 
           paste0(output_path,"/step5_Greg_time_step_dist_travelled.csv"), 
           row.names=FALSE)
+
+
+
+
+#################################################################################
+#### check #####################################################################
+#################################################################################
+str(GPS_sheep_reg_time_step_all)
+GPS_all_df_Exc_only <- GPS_sheep_reg_time_step_all %>% filter(VF_EX == "outside_VF")
+
+
+date_13_14_keep_these <- c(2,3,5,13,14,17,22,30,35) #100% trial was run on the 13th and 14th
+date_15_16_keep_these <- c(12,23,25, 10,15,21,27,33,36)  # 33% and 66% trial was run 15th and 16th
+
+
+Check_1 <- GPS_all_df_Exc_only %>%
+  filter(date == "2018-03-13" | date == "2018-03-13")  %>%
+  filter(sheep %in% date_13_14_keep_these)
+
+
+Check_2 <-  GPS_all_df_Exc_only %>%  
+  filter(date == "2018-03-15" |date == "2018-03-16")  %>%
+  filter(sheep %in% date_15_16_keep_these)
+
+
+count_exclusion_zone_occurance_per_animal_1 <- Check_1 %>%  group_by( sheep) %>% 
+  summarise(count_records = n())
+count_exclusion_zone_occurance_per_animal_1
+
+count_exclusion_zone_occurance_per_animal_2 <- Check_2 %>%  group_by( sheep) %>% 
+  summarise(count_records = n())
+count_exclusion_zone_occurance_per_animal_2
+
