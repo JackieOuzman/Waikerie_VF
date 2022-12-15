@@ -262,3 +262,18 @@ mean_number_close_animals
 
 RF_df <- left_join(RF_df, mean_number_close_animals)
 rm(mean_number_close_animals)
+
+
+
+###################################################################################
+###                 write out df ready for the next step                      ###
+###################################################################################
+
+output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  
+
+write.csv(RF_df, 
+          paste0(output_path,"/step9_RF_df_input.csv"), 
+          row.names=FALSE)
+###################################################################################
+### condense the data so it can be simply used in RF model - one row per sheep  ###
+###################################################################################
