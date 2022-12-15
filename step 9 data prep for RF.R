@@ -169,7 +169,7 @@ rm(cue_DOT_summary_wide)
 
 #####################################################################################
 ### what is the proportion of activity spent resting lying grazing? for the length of the trial?
-### could do average  day 1 and 2
+
 ######################################################################################
 str(collared_animals)
 
@@ -193,3 +193,72 @@ beha_summary <-beha_summary %>%  dplyr::select(sheep, prop_resting,prop_standing
 
 RF_df <- left_join(RF_df, beha_summary)
 rm(beha_summary)
+
+
+#####################################################################################
+### add in the disatnce between animals
+######################################################################################
+
+dist_bewteen_animals_33 <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_33percent.csv")
+dist_bewteen_animals_66 <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_66percent.csv")
+dist_bewteen_animals_100 <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_100percent.csv")
+
+
+## make a new variable hours
+dist_bewteen_animals_33$time_step <- as.POSIXct(dist_bewteen_animals_33$time_step,  tz = "Australia/Adelaide")
+dist_bewteen_animals_33 <- dist_bewteen_animals_33 %>%  dplyr::mutate(date= date(time_step))  
+
+dist_bewteen_animals_66$time_step <- as.POSIXct(dist_bewteen_animals_66$time_step,  tz = "Australia/Adelaide")
+dist_bewteen_animals_66 <- dist_bewteen_animals_66 %>%  dplyr::mutate(date= date(time_step))  
+
+dist_bewteen_animals_100$time_step <- as.POSIXct(dist_bewteen_animals_100$time_step,  tz = "Australia/Adelaide")
+dist_bewteen_animals_100 <- dist_bewteen_animals_100 %>%  dplyr::mutate(date= date(time_step))  
+
+#keep sheep with collars only on the days that the trials were run for them
+ 
+date_13_14_keep_these <- c(2,3,5,13,14,17,22,30,35) #100% trial was run on the 13th and 14th
+date_15_16_keep_these <- c(12,23,25, 10,15,21,27,33,36)  # 33% and 66% trial was run 15th and 16th
+
+
+dist_bewteen_animals_100 <- dist_bewteen_animals_100 %>%
+  filter(date == "2018-03-13" | date == "2018-03-13")  %>%
+  filter(sheep %in% date_13_14_keep_these)
+
+
+dist_bewteen_animals_66 <-
+  dist_bewteen_animals_66 %>%  
+  filter(date == "2018-03-15" |date == "2018-03-16")  %>%
+  filter(sheep %in% date_15_16_keep_these)
+
+dist_bewteen_animals_33 <-
+  dist_bewteen_animals_33 %>%
+  filter(date == "2018-03-15" | date == "2018-03-16")  %>%
+  filter(sheep %in% date_15_16_keep_these)
+
+
+dist_bewteen_animals_all <- rbind(dist_bewteen_animals_33, dist_bewteen_animals_66, dist_bewteen_animals_100)
+rm(dist_bewteen_animals_33,dist_bewteen_animals_66,  dist_bewteen_animals_100)
+
+
+
+
+
+## we have a problem the data has a heap of zero some of these relate to when the trial was run and not run
+#for example on the 13/3 and 14/3 
+#This step check df if I have got al of these -  i have no zero in check file - so its all good.
+
+check_what_to_remove <- dist_bewteen_animals_all %>%  group_by(date,sheep) %>% 
+  summarise(mean_number_animals_close = mean(numb_sheep_close, na.rm=TRUE))  %>% 
+  arrange(sheep, date)
+
+
+
+mean_number_close_animals<- dist_bewteen_animals_all %>%  group_by(sheep) %>% 
+  summarise(mean_number_animals_close = mean(numb_sheep_close, na.rm=TRUE))  %>% 
+  arrange(sheep)
+
+mean_number_close_animals
+
+
+RF_df <- left_join(RF_df, mean_number_close_animals)
+rm(mean_number_close_animals)
