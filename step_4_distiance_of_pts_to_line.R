@@ -68,6 +68,37 @@ ggplot() +
         axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank())+
   labs(title = "check")
 
+
+date_13_14_keep_these <- c(2,3,5,13,14,17,22,30,35) #100% trial was run on the 13th and 14th
+date_15_16_keep_these <- c(12,23,25, 10,15,21,27,33,36)  # 33% and 66% trial was run 15th and 16th
+
+
+Check_1 <- GPS %>%
+  filter(date == "2018-03-13" | date == "2018-03-13")  %>%
+  filter(sheep %in% date_13_14_keep_these)
+
+
+Check_2 <-  GPS %>%  
+  filter(date == "2018-03-15" |date == "2018-03-16")  %>%
+  filter(sheep %in% date_15_16_keep_these)
+
+
+
+ggplot() +
+  geom_sf(data = hard_fence_bound, color = "black", fill = NA) +
+  geom_sf(data = VF_line, color = "red", fill = NA) +
+  geom_sf(data = exclusion_zone, color = "blue", fill = NA) +
+  
+  geom_sf(data = Check_1 ,alpha = 0.03, color ="black") +
+  geom_sf(data = Check_2 ,alpha = 0.03, color ="blue") +
+ 
+  
+  theme_bw()+
+  theme(legend.position = "none",
+        axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank())+
+  labs(title = "check")
+
+
 ############################################################################################
 
 GPS
@@ -125,6 +156,61 @@ write.csv(GPS_all_df,
 ################################################################################
 #####   The below code is just checking on the few that didnt join       ######
 #### Its not an issue because its only really a few on the boundary.     ######
+
+str(GPS_all_df)
+GPS_all_df_Exc_only <- GPS_all %>% filter(VF_EX == "outside_VF")
+
+
+
+Check_1 <- GPS_all_df_Exc_only %>%
+  filter(date == "2018-03-13" | date == "2018-03-13")  %>%
+  filter(sheep %in% date_13_14_keep_these)
+
+
+Check_2 <-  GPS_all_df_Exc_only %>%  
+  filter(date == "2018-03-15" |date == "2018-03-16")  %>%
+  filter(sheep %in% date_15_16_keep_these)
+
+
+
+ggplot() +
+  geom_sf(data = hard_fence_bound, color = "black", fill = NA) +
+  geom_sf(data = VF_line, color = "red", fill = NA) +
+  geom_sf(data = exclusion_zone, color = "blue", fill = NA) +
+  
+  geom_sf(data = Check_1 ,alpha = 0.03, color ="black") +
+  geom_sf(data = Check_2 ,alpha = 0.03, color ="blue") +
+  
+  
+  theme_bw()+
+  theme(legend.position = "none",
+        axis.ticks = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank())+
+  labs(title = "check")
+
+
+
+
+#we have quite a few records that are logged in the exclusion zone
+
+str(Check_1)
+
+count_exclusion_zone_occurance_per_animal_1 <- Check_1 %>%  group_by( sheep) %>% 
+  summarise(count_records = n())
+count_exclusion_zone_occurance_per_animal_1
+
+count_exclusion_zone_occurance_per_animal_2 <- Check_2 %>%  group_by( sheep) %>% 
+  summarise(count_records = n())
+count_exclusion_zone_occurance_per_animal_2
+
+
+
+
+
+
+
+
+
+
 
 # test2 <- st_join(GPS_sheep2, test)
 # str(test2)
