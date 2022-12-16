@@ -155,3 +155,29 @@ output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  #animals_GPS_trim_time
 write.csv(all_animals_with_beh_hob, 
           paste0(output_path,"/step5b_Greg_time_step_dist_travelled.csv"), 
           row.names=FALSE)
+
+
+
+################################################################################
+
+## double check that there are not duplication
+
+
+duplication_report_all_with_Beha_Hobo <- all_animals_with_beh_hob %>% count(Time_sheep)
+duplication_report_all_with_Beha_Hobo #
+unique(duplication_report_all_with_Beha_Hobo$n)
+
+##why do I have duplication of my timestep a with sheep?
+
+duplication_report_all_with_all_animals <- all_animals %>% count(Time_sheep)
+duplication_report_all_with_all_animals #this is all ones so no duplication :)
+
+unique(duplication_report_all_with_all_animals$n)
+
+
+##why do I have duplication of my timestep a with sheep?
+
+duplication_report_all_with_behav_hobo <- behav_hobo %>% count(Time_sheep)
+duplication_report_all_with_behav_hobo #this is all ones so no duplication :)
+
+unique(duplication_report_all_with_behav_hobo$n)

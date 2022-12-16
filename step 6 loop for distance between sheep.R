@@ -34,11 +34,11 @@ sheep_list_x <- as.list(sheep_list_x)
 sheep_list_x <- c(sheep_list_x$comparison)
 
 sheep_list <- sheep_list_x
-sheep_list <- "10vs7"
+#sheep_list <- "10vs7"
 
 df <- reg_time_step %>%  arrange(time_step)
 
-#for (sheep_list in sheep_list){
+for (sheep_list in sheep_list){
   
   comparison_a_b <- as.data.frame(str_split(sheep_list, "vs"),
                                col.names = "Sheep_ID" )
