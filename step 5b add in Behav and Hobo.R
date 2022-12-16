@@ -36,7 +36,39 @@ behav <- behav %>%
                 Time_sheep = paste0(round_local_time,"_", sheep) )
 
 
+### Add and ID clm
+behav <- behav %>% dplyr::mutate( ID = row_number())
 
+# I want to make sure when there are duplicates entries for the same time I get the audio
+# keep only one record for A and only record for S
+
+behav_A <- behav %>% filter(Cue == "A")
+behav_S <- behav %>% filter(Cue == "S")
+
+behav_A <- behav_A %>% 
+  dplyr::distinct(Time_sheep, .keep_all = TRUE) 
+
+behav_S <- behav_S %>% 
+  dplyr::distinct(Time_sheep, .keep_all = TRUE)       
+  
+behav_A_S <- rbind(behav_A, behav_S)
+
+behav_A_S <- behav_A_S %>% arrange(Time_sheep)
+
+duplication_report_behav <- behav_A_S %>% count(Time_sheep)
+
+behav_A_S <- left_join(behav_A_S,duplication_report_behav ) %>% rename(occurance = n) 
+str(behav_A_S)
+
+behav_A_S <- behav_A_S %>% mutate(
+  what_to_retain = case_when(
+    occurance == 2 & Cue == "S" ~ "retain",
+    occurance == 1 & Cue == "A" ~ "retain",
+    TRUE                      ~ "discard"
+  )
+) 
+
+rm(behav,behav_A, behav_S, duplication_report_behav)
 ################################################################################
 #### --------------    Bring in Hobo data   -------------- ####
 ################################################################################
@@ -97,12 +129,15 @@ hobo_summary_wide <- hobo_summary_wide %>% select(
   running)
 
 
+duplication_report_hobo <- hobo_summary_wide %>% count(Time_sheep)
+duplication_report_hobo #this is all ones so no duplication :)
+
 hobo_summary_wide <- hobo_summary_wide %>% mutate(across(c(resting, standing, walking, running), round, 2))
 
 ###############################################################################
 #### --------------    Merge Hobo and Beha data   -------------- ####
 ################################################################################
-behav_hobo <- full_join(behav, hobo_summary_wide)
+behav_hobo <- full_join(behav_A_S, hobo_summary_wide)
 
 behav_hobo <- behav_hobo %>%  select(Time_sheep, Cue, resting: running  )
 
