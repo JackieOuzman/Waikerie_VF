@@ -44,7 +44,10 @@ step1_2_sf <-   st_as_sf(step1_2,
 
 #To the large block boundary
 step1_2_sf_clip <-
-  st_intersection(step1_2_sf, hard_fence_bound)
+  st_intersection(step1_2_sf, st_difference(hard_fence_bound)) #this 'st_difference' function is supposed to remove the duplication
+
+
+
 
 ### check
 
