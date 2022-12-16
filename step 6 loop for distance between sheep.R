@@ -2,8 +2,10 @@ library(dplyr)
 library(tidyverse)
 library(readr)
 library(lubridate)
+library(readxl)
 
   
+#GPS_Sheep <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step5b_Greg_time_step_dist_travelled.csv")
 GPS_Sheep <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step5_Greg_time_step_dist_travelled.csv") 
 GPS_Sheep$local_time <- as.POSIXct(GPS_Sheep$local_time,  tz = "Australia/Adelaide")          
 GPS_Sheep$time_step <- as.POSIXct(GPS_Sheep$time_step,  tz = "Australia/Adelaide") 

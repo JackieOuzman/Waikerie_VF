@@ -111,10 +111,10 @@ GPS <- GPS %>%
 
 VF <- VF %>%  dplyr::select(Id, geometry)
 
-VF_points <-  st_intersection(GPS, VF) %>% 
+VF_points <-  st_intersection(GPS, st_difference(VF)) %>% 
   dplyr::mutate(VF_EX = "inside_VF")
 
-Exclusion_points <-  st_intersection(GPS, exclusion_zone)%>% 
+Exclusion_points <-  st_intersection(GPS, st_difference(exclusion_zone))%>% 
   dplyr::mutate(VF_EX = "outside_VF")
 
 names(VF_points)
