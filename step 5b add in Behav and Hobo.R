@@ -9,7 +9,7 @@ library(sp)
 library(sf)
 ################################################################################
 
-#Bring in the behavioual data and HOBO data and merge to step 5
+#Bring in the behavioural data and HOBO data and merge to step 5
 
 ################################################################################
 #### --------------    Bring in data   -------------- ####
@@ -67,6 +67,11 @@ behav_A_S <- behav_A_S %>% mutate(
     TRUE                      ~ "discard"
   )
 ) 
+
+behav_A_S <- behav_A_S %>%filter(what_to_retain == "retain")
+str(behav_A_S)
+behav_A_S <- behav_A_S %>% arrange(sheep, round_local_time)
+
 
 rm(behav,behav_A, behav_S, duplication_report_behav)
 ################################################################################
@@ -148,6 +153,10 @@ behav_hobo <- behav_hobo %>%  select(Time_sheep, Cue, resting: running  )
 all_animals_with_beh_hob <- left_join(all_animals,behav_hobo)
 
 
+duplication_report_all_animals_with_beh_hob <- all_animals_with_beh_hob %>% count(Time_sheep)
+duplication_report_all_animals_with_beh_hob #this is all ones so no duplication :)
+
+
 
 output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  #animals_GPS_trim_time
 
@@ -160,7 +169,7 @@ write.csv(all_animals_with_beh_hob,
 
 ################################################################################
 
-## double check that there are not duplication
+## double check that there are not duplication - looks like its fixed no duplication
 
 
 duplication_report_all_with_Beha_Hobo <- all_animals_with_beh_hob %>% count(Time_sheep)
