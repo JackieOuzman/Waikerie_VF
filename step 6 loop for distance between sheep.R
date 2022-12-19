@@ -25,7 +25,7 @@ list_of_comparsions <- read_excel("W:/VF/Optimising_VF/Waikerie/data_prep/list o
 list_of_comparsions <- list_of_comparsions %>%  filter(is.na(problem))
 
 ##---- select---###
-list_of_comparsions_x <- list_of_comparsions %>%  filter(treatment == "0.66") 
+list_of_comparsions_x <- list_of_comparsions %>%  filter(treatment == "control") #0.66 and 0.33 1 control
 sheep_list_x <- list_of_comparsions_x
 
 
@@ -34,7 +34,7 @@ sheep_list_x <- as.list(sheep_list_x)
 sheep_list_x <- c(sheep_list_x$comparison)
 
 sheep_list <- sheep_list_x
-#sheep_list <- "10vs7"
+
 
 df <- reg_time_step %>%  arrange(time_step)
 
@@ -86,7 +86,7 @@ for (sheep_list in sheep_list){
 
 #write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_100percent.csv")
 #write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_33percent.csv")
-#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_control.csv")
+write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_control.csv")
 #write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_66.csv")
 
 
