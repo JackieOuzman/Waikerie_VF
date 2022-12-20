@@ -51,7 +51,9 @@ numRandPts <- 50000
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 # load data
 
-RF_df <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step9_RF_df_input.csv")
+RF_df_raw <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step9_RF_df_input.csv")
+
+RF_df <- RF_df_raw
 str(RF_df)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unique(RF_df$compliance_score)
@@ -155,3 +157,18 @@ pred_test <- predict(RF_model,
                      newdata = RF_df, 
                      type= "class")
 pred_test #this gives me a list of my sheep and what class they are assigned to - I hope?
+Check_output_of_RF_model <- as.data.frame(pred_test)
+str(RF_df_raw)
+
+sheep_ID_compliance_score <- RF_df_raw %>%  dplyr::select (sheep, compliance_score) 
+  
+sheep_ID_compliance_score_withRF_results <- cbind(sheep_ID_compliance_score, Check_output_of_RF_model)
+sheep_ID_compliance_score_withRF_results <- sheep_ID_compliance_score_withRF_results %>% 
+  mutate(pred_compliance_score = case_when(
+    pred_test == 1 ~ "non_compliant",
+    pred_test == 0 ~ "compliant"
+    
+  ))
+write.csv(sheep_ID_compliance_score_withRF_results, 
+          paste0(outDir,"/sheep_ID_compliance_score_withRF_results_check.csv"), 
+          row.names=FALSE)
