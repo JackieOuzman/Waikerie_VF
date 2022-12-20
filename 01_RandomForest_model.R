@@ -1,8 +1,7 @@
 
-# David Gobbett
-# 3-Nov-2022
+
 # 
-# 04_RandomForest_downsampled.R
+#RandomForest
 # 
 # 
 # 
@@ -18,7 +17,7 @@
 
 
 #install.packages("randomForest")
-install.packages("Hmisc")
+#install.packages("Hmisc")
 
 
 libs <- c("tidyverse", "dplyr",  "ggplot2", "randomForest", "Hmisc")
@@ -40,7 +39,7 @@ load.libraries(libs)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-#ver <- "v1c"
+
 
 baseDir <- "W:/VF/Optimising_VF/Waikerie/data_prep/"
 outDir <- "W:/VF/Optimising_VF/Waikerie/data_prep/"
@@ -68,9 +67,24 @@ RF_df <- RF_df %>%
 
 RF_df[ is.na(RF_df) ] <- 0
 
-str(RF_df_corr_input)
-RF_df_corr_input <- RF_df %>% dplyr::select(-compliance_score,-sheep, -treatment , -herd_postion )
 
+str(RF_df)
+
+RF_df <- RF_df %>% dplyr::select(-sheep,-treatment,
+                                -mean_dist_day1,
+                                -mean_dist_day2,
+                                -total_audio_Day1,
+                                -total_audio_Day2,
+                                -total_pulse_Day1,
+                                -total_pulse_Day2,
+                                -ratio_Day1,
+                                -ratio_Day2
+                                )
+
+
+
+RF_df_corr_input <- RF_df %>% dplyr::select(-compliance_score, -herd_postion )
+str(RF_df_corr_input)
 
 
 res2<-rcorr(as.matrix(RF_df_corr_input))
@@ -90,9 +104,25 @@ flattenCorrMatrix <- function(cormat, pmat) {
 }
 
 correaltion <- flattenCorrMatrix(res2$r, res2$P)
-correaltion <- correaltion %>%  arrange(cor)
+correaltion <- correaltion %>%   arrange(desc(abs(cor)))
+correaltion$cor <- round(correaltion$cor,2)
+correaltion
 
+ 
 
+write.csv(correaltion, 
+          paste0(outDir,"/RF_input_data_Waikerie_correaltion_matrix.csv"), 
+          row.names=FALSE)
+
+#---------------------------------------##
+str(RF_df)
+
+RF_df <- RF_df %>% dplyr::select(#-mean_dist_frm_VF_outside_inclusion,
+                                 -max_dist_frm_VF_outside_inclusion,
+                                 -prop_standing,
+                                 -herd_postion)
+
+names(RF_df)
 
 RF_model <- randomForest(formula = compliance_score ~.,
             data = RF_df,
@@ -100,17 +130,10 @@ RF_model <- randomForest(formula = compliance_score ~.,
             #sampsize = smpsize,
             replace = TRUE)
 
+RF_model
 
-names(RF_df)
 
-RF_df_subset <- RF_df %>% dplyr::select(-sheep,-treatment ,
-                                 -mean_dist_frm_VF_outside_inclusion,
-                                 -max_dist_frm_VF_outside_inclusion,
-                                 -total_pulse_Day1,-total_pulse_Day2,
-                                 - total_audio_Day1,-total_audio_Day2,
-                                 -mean_dist_day1,-mean_dist_day2,
-                                -ratio_Day1 ,
-                                -ratio_Day2)
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 RF_model
 plot(RF_model)
@@ -118,20 +141,17 @@ importance(RF_model)
 
 whats_important_for_model <- as.data.frame(importance(RF_model))
 whats_important_for_model <- whats_important_for_model %>%  arrange(desc(MeanDecreaseGini))
-whats_important_for_model
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-RF_subsetmodel <- randomForest(formula = compliance_score ~.,
-                         data = RF_df_subset,
-                         ntree = 1500,
-                         #sampsize = smpsize,
-                         replace = TRUE)
+whats_important_for_model$MeanDecreaseGini <- round(whats_important_for_model$MeanDecreaseGini,2)
 
-RF_subsetmodel
-plot(RF_subsetmodel)
-importance(RF_subsetmodel)
+# ---------------------------------------------------------------------------------------------------
 
-whats_important_for_model_subset <- as.data.frame(importance(RF_subsetmodel))
-whats_important_for_model_subset <- whats_important_for_model_subset %>%  arrange(desc(MeanDecreaseGini))
-whats_important_for_model_subset
+# Now lets try with subset of data.
 
+## task one make a dataset which only conatins day 1 data this is id_dataset
+
+#https://www.projectpro.io/recipes/perform-random-forest-r
+pred_test <- predict(RF_model, 
+                     newdata = RF_df, 
+                     type= "class")
+pred_test #this gives me a list of my sheep and what class they are assigned to - I hope?
