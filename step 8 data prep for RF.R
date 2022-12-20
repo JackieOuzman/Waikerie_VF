@@ -17,7 +17,7 @@ all_animals$local_time <- as.POSIXct(all_animals$local_time,  tz = "Australia/Ad
 
 
 ################################################################################
-####    remove the animals tha don't have collars     ###########################
+####    remove the animals that don't have collars     ###########################
 ################################################################################
 
 list_of_sheep_VF <- c(2,3,5,13,17,22,30,35,
@@ -31,7 +31,7 @@ all_animals_collars <- all_animals %>%  filter( sheep %in% list_of_sheep_VF)
 
 
 ###############################################################################
-#### create a ID varaible if the animal is in the exclusion zone or not  #####
+#### create a ID variable if the animal is in the exclusion zone or not  #####
 ### perhaps something like time spent in the VF ####
 
 
@@ -93,4 +93,3 @@ write.csv(all_animals_collars,
 ###################################################################################
 
 
-)
