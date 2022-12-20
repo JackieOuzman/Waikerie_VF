@@ -172,3 +172,16 @@ sheep_ID_compliance_score_withRF_results <- sheep_ID_compliance_score_withRF_res
 write.csv(sheep_ID_compliance_score_withRF_results, 
           paste0(outDir,"/sheep_ID_compliance_score_withRF_results_check.csv"), 
           row.names=FALSE)
+
+
+# ---------------------------------------------------------------------------------------------------
+# saving the model and example of loading the model
+
+
+
+saveRDS(RF_model, file = paste0("W:/VF/Optimising_VF/Waikerie/data_prep/RF_model_outputs/", "RF_model_vs1.rda"))
+          
+         
+
+#loading the model
+RF_modelVs1 = readRDS(paste0("W:/VF/Optimising_VF/Waikerie/data_prep/RF_model_outputs/", "RF_model_vs1.rda"))
