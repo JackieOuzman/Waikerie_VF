@@ -41,14 +41,15 @@ collared_animals <- collared_animals %>%
 
 
 #----summaries the distance to VF variable
-
+str(collared_animals)
 
 
 dist_frm_VF_summary <- collared_animals %>%  group_by(sheep) %>% 
-  summarise(mean_dist_frm_VF_inside_inclusion =mean(dist_frm_VF_inside_inclusion, na.rm=TRUE),
+  summarise(
+            mean_dist_frm_VF_inside_inclusion =mean(dist_frm_VF_inside_inclusion, na.rm=TRUE),
             max_dist_frm_VF_inside_inclusion =max(dist_frm_VF_inside_inclusion, na.rm=TRUE),
             
-            mean_dist_frm_VF_outside_inclusion =mean(dist_frm_VF_outside_inclusion, na.rm=TRUE),
+            mean_dist_frm_VF_outside_inclusion =mean(dist_frm_VF_outside_inclusion, na.rm=TRUE), #this will give you a warning message beacuse of the heaps of zero values
             max_dist_frm_VF_outside_inclusion =max(dist_frm_VF_outside_inclusion, na.rm=TRUE)
             )
 
@@ -196,7 +197,7 @@ rm(beha_summary)
 
 
 #####################################################################################
-### add in the disatnce between animals
+### add in the distance between animals
 ######################################################################################
 
 dist_bewteen_animals_33 <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_33percent.csv")
