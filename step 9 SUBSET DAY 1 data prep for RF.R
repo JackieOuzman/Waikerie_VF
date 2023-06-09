@@ -10,11 +10,25 @@ library(sp)
 library(sf)
 
 
-collared_animals <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step8_all_animals_collars.csv")
+collared_animals <- read_csv("W:/VF/Optimising_VF/Lameroo/data_prep/step8_all_animals_collars.csv")
 
 collared_animals$local_time <- as.POSIXct(collared_animals$local_time,  tz = "Australia/Adelaide")
 
 str(collared_animals)
+
+
+#####################################################
+### Add DOY clm
+temp <- collared_animals %>% 
+  filter(!is.na(DOY ))
+
+min_DOY <- min(temp$DOY, na.rm = TRUE)
+max_DOY <- max(temp$DOY, na.rm = TRUE)
+
+collared_animals <- collared_animals %>% 
+  mutate(DOT = (DOY - min_DOY)+1 )
+
+#####################################################
 
 
 ### retain only the day 1 data

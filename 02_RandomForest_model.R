@@ -20,8 +20,8 @@ load.libraries(libs)
 
 
 
-baseDir <- "W:/VF/Optimising_VF/Waikerie/data_prep/RF_model_outputs/"
-outDir <- "W:/VF/Optimising_VF/Waikerie/data_prep/RF_model_input_data/"
+baseDir <- "W:/VF/Optimising_VF/Lameroo/data_prep/RF_model_outputs/"
+outDir <- "W:/VF/Optimising_VF/Lameroo/data_prep/RF_model_outputs/"
 
 
 #loading the model
