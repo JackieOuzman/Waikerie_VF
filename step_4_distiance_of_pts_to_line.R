@@ -69,13 +69,17 @@ ggplot() +
   labs(title = "check")
 
 
-date_13_14_keep_these <- c(2,3,5,13,14,17,22,30,35) #100% trial was run on the 13th and 14th
+
+
+date_13_14_keep_these <- c(2,3,5,13,14,17,22,30,35) #100% trial was run on the 13th and 14th 
 date_15_16_keep_these <- c(12,23,25, 10,15,21,27,33,36)  # 33% and 66% trial was run 15th and 16th
 
 
 Check_1 <- GPS %>%
-  filter(date == "2018-03-13" | date == "2018-03-13")  %>%
+  filter(date == "2018-03-13" | date == "2018-03-14")  #%>%
   filter(sheep %in% date_13_14_keep_these)
+
+unique(Check_1$sheep)
 
 
 Check_2 <-  GPS %>%  
@@ -139,7 +143,7 @@ names(GPS_all_df)
 GPS_all_df <-   cbind(GPS_all_df,coordinates )
 
 
-
+names(GPS_all_df)
 
 
 path_output_files <- "W:/VF/Optimising_VF/Waikerie/data_prep/" 
