@@ -33,17 +33,17 @@ str(GPS_Dist)
 
 
 start <- min(GPS_Dist$local_time, na.rm = TRUE)  # "2018-03-13 09:30:40 ACDT"
-end <-   max(GPS_Dist$local_time, na.rm = TRUE) # "2018-03-16 15:30:00 ACDT"
+end <-   max(GPS_Dist$local_time, na.rm = TRUE) # "2018-03-14 15:30:00 ACDT"
 #Since we’re dealing with elapsed time between two dates, let’s start with Intervals. We can define an Interval using the %--% operator.
 start <- round_date(start, unit="10 mins") #"2018-03-13 09:30:00 ACDT"
-end <- round_date(end, unit="10 mins") #"2018-03-16 15:30:00 ACDT"
+end <- round_date(end, unit="10 mins") #"2018-03-14 15:30:00 ACDT"
 
 time.interval <- start %--% end
 time.interval
 #To create a Duration between these two dates, we can use the as.duration function.
 
 time.duration <- as.duration(time.interval)
-time.duration # "280760s (~3.25 days)"
+time.duration # "108000s (~1.25 days)"
 
 ################################################################################
 #### --------------    make a regular time step   -------------- ####
@@ -73,10 +73,10 @@ rm(end,start, time.duration, time.interval)
 ################################################################################
 
 sheep_list <- GPS_Dist %>% distinct(sheep) %>%  arrange(sheep)
-### 26 sheep ID I need regular time interval for each sheep
+### 9 sheep ID I need regular time interval for each sheep
 ### List of sites I want to run analysis for:
 
-sheep_list <- c(1:36)
+sheep_list <- c(2,3,5,13,14,17,22,30,35)
 #sheep_list <- 2
 
 ### as a function
@@ -150,7 +150,7 @@ for (sheep_list in sheep_list){
   
   }       
 
-file_list <- data.frame(name_df = paste0("GPS_sheep_reg_time_step",c(1:36)))
+file_list <- data.frame(name_df = paste0("GPS_sheep_reg_time_step",c(2,3,5,13,14,17,22,30,35)))
 
 
 
@@ -158,82 +158,84 @@ file_list <- data.frame(name_df = paste0("GPS_sheep_reg_time_step",c(1:36)))
 
 
 GPS_sheep_reg_time_step_all <- rbind(
-  GPS_sheep_reg_time_step1,
+  #GPS_sheep_reg_time_step1,
   GPS_sheep_reg_time_step2,
   GPS_sheep_reg_time_step3,
-  GPS_sheep_reg_time_step4,
+  #GPS_sheep_reg_time_step4,
   GPS_sheep_reg_time_step5,
-  GPS_sheep_reg_time_step6,
-  GPS_sheep_reg_time_step7,
-  GPS_sheep_reg_time_step8,
-  GPS_sheep_reg_time_step9,
-  GPS_sheep_reg_time_step10,
-  GPS_sheep_reg_time_step11,
-  GPS_sheep_reg_time_step12,
+  # GPS_sheep_reg_time_step6,
+  # GPS_sheep_reg_time_step7,
+  # GPS_sheep_reg_time_step8,
+  # GPS_sheep_reg_time_step9,
+  # GPS_sheep_reg_time_step10,
+  # GPS_sheep_reg_time_step11,
+  # GPS_sheep_reg_time_step12,
   GPS_sheep_reg_time_step13,
   GPS_sheep_reg_time_step14,
-  GPS_sheep_reg_time_step15,
-  GPS_sheep_reg_time_step16,
+  # GPS_sheep_reg_time_step15,
+  # GPS_sheep_reg_time_step16,
   GPS_sheep_reg_time_step17,
-  GPS_sheep_reg_time_step18,
-  GPS_sheep_reg_time_step19,
-  GPS_sheep_reg_time_step20,
-  GPS_sheep_reg_time_step21,
+  # GPS_sheep_reg_time_step18,
+  # GPS_sheep_reg_time_step19,
+  # GPS_sheep_reg_time_step20,
+  # GPS_sheep_reg_time_step21,
   GPS_sheep_reg_time_step22,
-  GPS_sheep_reg_time_step23,
-  GPS_sheep_reg_time_step24,
-  GPS_sheep_reg_time_step25,
-  GPS_sheep_reg_time_step26,
-  GPS_sheep_reg_time_step27,
-  GPS_sheep_reg_time_step28,
-  GPS_sheep_reg_time_step29,
+  # GPS_sheep_reg_time_step23,
+  # GPS_sheep_reg_time_step24,
+  # GPS_sheep_reg_time_step25,
+  # GPS_sheep_reg_time_step26,
+  # GPS_sheep_reg_time_step27,
+  # GPS_sheep_reg_time_step28,
+  # GPS_sheep_reg_time_step29,
   GPS_sheep_reg_time_step30,
-  GPS_sheep_reg_time_step31,
-  GPS_sheep_reg_time_step32,
-  GPS_sheep_reg_time_step33,
-  GPS_sheep_reg_time_step34,
-  GPS_sheep_reg_time_step35,
-  GPS_sheep_reg_time_step36)
+  # GPS_sheep_reg_time_step31,
+  # GPS_sheep_reg_time_step32,
+  # GPS_sheep_reg_time_step33,
+  # GPS_sheep_reg_time_step34,
+  GPS_sheep_reg_time_step35
+  #GPS_sheep_reg_time_step36
+  )
 
 
 
 
-rm(GPS_sheep_reg_time_step1,
-   GPS_sheep_reg_time_step2,
-   GPS_sheep_reg_time_step3,
-   GPS_sheep_reg_time_step4,
-   GPS_sheep_reg_time_step5,
-   GPS_sheep_reg_time_step6,
-   GPS_sheep_reg_time_step7,
-   GPS_sheep_reg_time_step8,
-   GPS_sheep_reg_time_step9,
-   GPS_sheep_reg_time_step10,
-   GPS_sheep_reg_time_step11,
-   GPS_sheep_reg_time_step12,
-   GPS_sheep_reg_time_step13,
-   GPS_sheep_reg_time_step14,
-   GPS_sheep_reg_time_step15,
-   GPS_sheep_reg_time_step16,
-   GPS_sheep_reg_time_step17,
-   GPS_sheep_reg_time_step18,
-   GPS_sheep_reg_time_step19,
-   GPS_sheep_reg_time_step20,
-   GPS_sheep_reg_time_step21,
-   GPS_sheep_reg_time_step22,
-   GPS_sheep_reg_time_step23,
-   GPS_sheep_reg_time_step24,
-   GPS_sheep_reg_time_step25,
-   GPS_sheep_reg_time_step26,
-   GPS_sheep_reg_time_step27,
-   GPS_sheep_reg_time_step28,
-   GPS_sheep_reg_time_step29,
-   GPS_sheep_reg_time_step30,
-   GPS_sheep_reg_time_step31,
-   GPS_sheep_reg_time_step32,
-   GPS_sheep_reg_time_step33,
-   GPS_sheep_reg_time_step34,
-   GPS_sheep_reg_time_step35,
-   GPS_sheep_reg_time_step36)
+rm(#GPS_sheep_reg_time_step1,
+  GPS_sheep_reg_time_step2,
+  GPS_sheep_reg_time_step3,
+  #GPS_sheep_reg_time_step4,
+  GPS_sheep_reg_time_step5,
+  # GPS_sheep_reg_time_step6,
+  # GPS_sheep_reg_time_step7,
+  # GPS_sheep_reg_time_step8,
+  # GPS_sheep_reg_time_step9,
+  # GPS_sheep_reg_time_step10,
+  # GPS_sheep_reg_time_step11,
+  # GPS_sheep_reg_time_step12,
+  GPS_sheep_reg_time_step13,
+  GPS_sheep_reg_time_step14,
+  # GPS_sheep_reg_time_step15,
+  # GPS_sheep_reg_time_step16,
+  GPS_sheep_reg_time_step17,
+  # GPS_sheep_reg_time_step18,
+  # GPS_sheep_reg_time_step19,
+  # GPS_sheep_reg_time_step20,
+  # GPS_sheep_reg_time_step21,
+  GPS_sheep_reg_time_step22,
+  # GPS_sheep_reg_time_step23,
+  # GPS_sheep_reg_time_step24,
+  # GPS_sheep_reg_time_step25,
+  # GPS_sheep_reg_time_step26,
+  # GPS_sheep_reg_time_step27,
+  # GPS_sheep_reg_time_step28,
+  # GPS_sheep_reg_time_step29,
+  GPS_sheep_reg_time_step30,
+  # GPS_sheep_reg_time_step31,
+  # GPS_sheep_reg_time_step32,
+  # GPS_sheep_reg_time_step33,
+  # GPS_sheep_reg_time_step34,
+  GPS_sheep_reg_time_step35)
+  #GPS_sheep_reg_time_step36
+  
 
 ##### Think about how to deal with yarding times - I think you may need to remove first step cal after yarding time.
 ## I dont think I need to do anything here - the animals we yarded over night and the data is trimmed to this alreday.

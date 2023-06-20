@@ -157,6 +157,14 @@ duplication_report_all_animals_with_beh_hob <- all_animals_with_beh_hob %>% coun
 duplication_report_all_animals_with_beh_hob #this is all ones so no duplication :)
 
 
+##############################################################################
+#### -- because we only have 100% trial data I need to remove the other logs from the other trials -------------- ####
+################################################################################
+all_animals_with_beh_hob <- all_animals_with_beh_hob %>% 
+  filter(!is.na(ID)) 
+
+
+################################################################################
 
 output_path <- "W:/VF/Optimising_VF/Waikerie/data_prep/"  #animals_GPS_trim_time
 
