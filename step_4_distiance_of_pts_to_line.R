@@ -72,20 +72,14 @@ ggplot() +
 
 
 date_13_14_keep_these <- c(2,3,5,13,14,17,22,30,35) #100% trial was run on the 13th and 14th 
-date_15_16_keep_these <- c(12,23,25, 10,15,21,27,33,36)  # 33% and 66% trial was run 15th and 16th
+
 
 
 Check_1 <- GPS %>%
-  filter(date == "2018-03-13" | date == "2018-03-14")  #%>%
+  filter(date == "2018-03-13" | date == "2018-03-14")  %>%
   filter(sheep %in% date_13_14_keep_these)
 
 unique(Check_1$sheep)
-
-
-Check_2 <-  GPS %>%  
-  filter(date == "2018-03-15" |date == "2018-03-16")  %>%
-  filter(sheep %in% date_15_16_keep_these)
-
 
 
 ggplot() +
@@ -94,8 +88,6 @@ ggplot() +
   geom_sf(data = exclusion_zone, color = "blue", fill = NA) +
   
   geom_sf(data = Check_1 ,alpha = 0.03, color ="black") +
-  geom_sf(data = Check_2 ,alpha = 0.03, color ="blue") +
- 
   
   theme_bw()+
   theme(legend.position = "none",
