@@ -27,7 +27,7 @@ RF_df <- collared_animals %>% distinct(sheep, .keep_all = TRUE) %>%
 
 
 ################################################################################
-### Note these trials were only 2 days long
+### Note these trials were only 2 days long - another idea is to only keep 100% trial VF collared animals
 ### Add DOY clm
 temp <- collared_animals %>% 
   filter(!is.na(DOY ))
@@ -79,9 +79,38 @@ collared_animals <- collared_animals %>%
       DOT == 1 ~ "Early behaviour",
       DOT > 1 ~ "Later behaviour"))
 
-##------up to hear ------####
-################################################################################
 
+################################################################################
+### Hours for early behaviour and hours for later behaviour
+str(collared_animals)
+
+hours_behav <- collared_animals %>% count(sheep)
+hours_behav$n <- as.double(hours_behav$n)
+
+
+hours_behav <-  hours_behav %>% mutate(mins = n *10) #each data point is a 10min log
+
+hours_behav
+
+##---- up to her -----##
+#####################################################################################
+### add in the distance between animals
+######################################################################################
+
+dist_bewteen <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals.csv")
+
+
+
+## make a new variable hours
+dist_bewteen$time_step <- as.POSIXct(dist_bewteen$time_step,  tz = "Australia/Adelaide")
+dist_bewteen <- dist_bewteen %>%  dplyr::mutate(date= date(time_step))  
+
+#### add to the collared animals df
+collared_animals <- left_join(collared_animals, dist_bewteen)
+
+
+
+#####################################################################################
 
 #####################################################################################
 ### what is the average distance to the fence?
