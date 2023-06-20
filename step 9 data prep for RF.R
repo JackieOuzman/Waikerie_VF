@@ -92,7 +92,7 @@ hours_behav <-  hours_behav %>% mutate(mins = n *10) #each data point is a 10min
 
 hours_behav
 
-##---- up to her -----##
+##---- up to here -----##
 #####################################################################################
 ### add in the distance between animals
 ######################################################################################
