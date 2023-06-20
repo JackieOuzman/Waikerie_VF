@@ -54,18 +54,20 @@ count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal_wide %>% dpl
 
 #sum of total counts
 
-count_VF_occurance_per_animal_wide <-count_VF_occurance_per_animal_wide %>% 
+count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal_wide %>% 
   dplyr::mutate(total_counts = inside_VF + outside_VF,
-                prop_exclusion_zone = outside_VF /total_counts) %>% 
-  arrange(sheep )
+                prop_exclusion_zone = ((outside_VF /total_counts)*100)) %>% 
+  arrange(sheep)
 
+
+count_VF_occurance_per_animal_wide
 
 ### turn the time spent in exclusion zone into categorical data.
 
 count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal_wide %>% 
   dplyr::mutate(compliance_score =
-    case_when(prop_exclusion_zone == 0 ~ "compliant",
-              prop_exclusion_zone > 0 ~ "non_compliant"))
+    case_when(prop_exclusion_zone > 5 ~ "compliant",
+              prop_exclusion_zone <= 5 ~ "non_compliant"))
 
 sheep_compliance_score <- count_VF_occurance_per_animal_wide %>% dplyr::select(sheep, compliance_score)
 
