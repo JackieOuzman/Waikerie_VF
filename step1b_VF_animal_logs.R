@@ -87,15 +87,12 @@ ggplot() +
 # let divide the data per day
 day_13 <- GPS_sf_trans %>%  filter(date == "2018-03-13") 
 day_14 <- GPS_sf_trans %>%  filter(date == "2018-03-14")
-day_15 <- GPS_sf_trans %>%  filter(date == "2018-03-15")
-day_16 <- GPS_sf_trans %>%  filter(date == "2018-03-16")
 
 # let divide the data per day and again by treatment
-day_13 <-day_13 %>%  filter(treatment == "100_percent"| treatment == "control")
-day_14 <-day_14 %>%  filter(treatment == "100_percent"| treatment == "control")
+day_13 <-day_13 %>%  filter(treatment == "100_percent")
+day_14 <-day_14 %>%  filter(treatment == "100_percent")
 
-day_15 <-day_15 %>%  filter(treatment == "33_percent"| treatment == "66_percent")
-day_16 <-day_16 %>%  filter(treatment == "33_percent"| treatment == "66_percent")
+
 
 
 str(day_13)
@@ -109,8 +106,6 @@ max(day_13$local_time)
 
 day_13_clean <- day_13%>% filter( between(local_time, ymd_hms("2018-03-13 09:30:00"), ymd_hms("2018-03-13 15:30:00")) )
 day_14_clean <- day_14%>% filter( between(local_time, ymd_hms("2018-03-14 09:30:00"), ymd_hms("2018-03-14 15:30:00")) )
-day_15_clean <- day_15%>% filter( between(local_time, ymd_hms("2018-03-15 09:30:00"), ymd_hms("2018-03-15 15:30:00")) )
-day_16_clean <- day_16%>% filter( between(local_time, ymd_hms("2018-03-16 09:30:00"), ymd_hms("2018-03-16 15:30:00")) )
 
 
 
@@ -118,9 +113,9 @@ day_16_clean <- day_16%>% filter( between(local_time, ymd_hms("2018-03-16 09:30:
 
 ### put it back together 
 
-GPS_trim_time <- rbind(day_13_clean, day_14_clean, day_15_clean, day_16_clean)
+GPS_trim_time <- rbind(day_13_clean, day_14_clean)
 
-rm(day_13_clean, day_14_clean, day_15_clean, day_16_clean, day_13, day_14, day_15, day_16)
+rm(day_13_clean, day_14_clean, day_13, day_14)
 
 ########################################################################################
 
