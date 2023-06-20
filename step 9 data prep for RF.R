@@ -10,12 +10,78 @@ library(sf)
 
 collared_animals <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step8_all_animals_collars.csv")
 
-collared_animals$local_time <- as.POSIXct(collared_animals$local_time,  tz = "Australia/Adelaide")
+collared_animals$local_time <- as.POSIXct(collared_animals$local_time,  tz = "Australia/Melbourne") #to match what was defined in early steps
 
 str(collared_animals)
 
 RF_df <- collared_animals %>% distinct(sheep, .keep_all = TRUE) %>% 
   dplyr::select(sheep, compliance_score, treatment, herd_postion)
+
+
+################################################################################
+####    remove the time logs I don't want      ###########################
+################################################################################
+
+
+#nothing selected here - other trial we had training period defined
+
+
+################################################################################
+### Note these trials were only 2 days long
+### Add DOY clm
+temp <- collared_animals %>% 
+  filter(!is.na(DOY ))
+
+min_DOY <- min(temp$DOY, na.rm = TRUE)
+max_DOY <- max(temp$DOY, na.rm = TRUE)
+
+
+date_13_14_keep_these <- c(2,3,5,13,14,17,22,30,35) #100% trial was run on the 13th and 14th 
+date_15_16_keep_these <- c(12,23,25, 10,15,21,27,33,36)  # 33% and 66% trial was run 15th and 16th
+
+
+Check_1 <- temp %>%
+  filter(date == "2018-03-13" | date == "2018-03-14")  #%>%
+filter(sheep %in% date_13_14_keep_these)
+Check_1_min_DOY <- min(Check_1$DOY, na.rm = TRUE)
+
+Check_2 <-  temp %>%  
+  filter(date == "2018-03-15" |date == "2018-03-16")  %>%
+  filter(sheep %in% date_15_16_keep_these)
+Check_2_min_DOY <- min(Check_2$DOY, na.rm = TRUE)
+
+Check_1 <- Check_1 %>% 
+  mutate(DOT = (DOY - Check_1_min_DOY)+1 )
+
+Check_2 <- Check_2 %>% 
+  mutate(DOT = (DOY - Check_2_min_DOY)+1 )
+
+
+new_DOT <- rbind(Check_1, Check_2)
+new_DOT <- new_DOT %>%  dplyr::select(ID, DOT)
+
+#remove old day of trial 
+collared_animals <- collared_animals %>% dplyr::select(-DOT)
+collared_animals <- left_join(collared_animals, new_DOT)  
+
+collared_animals$DOY <- as.double(collared_animals$DOY )
+
+rm(Check_2, Check_1, new_DOT, temp)
+################################################################################
+### Definition of early behaviour ### Note these trials were only 2 days long
+################################################################################
+
+str(collared_animals)
+
+collared_animals <- collared_animals %>% 
+  mutate(
+    behaviour_stage = case_when(
+      DOT == 1 ~ "Early behaviour",
+      DOT > 1 ~ "Later behaviour"))
+
+##------up to hear ------####
+################################################################################
+
 
 #####################################################################################
 ### what is the average distance to the fence?
