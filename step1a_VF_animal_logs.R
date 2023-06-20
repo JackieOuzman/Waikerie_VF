@@ -795,9 +795,9 @@ sheep_day1_control <- rbind(sheep29_1, sheep4_1, sheep8_1, sheep20_1, sheep24_1)
 rm(sheep29_1, sheep4_1, sheep8_1, sheep20_1, sheep24_1)
 
 treatment <- "Controlsd2"
-
+path_HOBO_VFtest
 sheep29_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep29clip.csv")) %>%   dplyr::mutate(sheep = 29,  day = 2)
-sheep4_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep4clip.csv")) %>%   dplyr::mutate(sheep = 4,  day = 2)
+#sheep4_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep4clip.csv")) %>%   dplyr::mutate(sheep = 4,  day = 2)
 sheep8_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep8clip.csv")) %>%   dplyr::mutate(sheep = 8,  day = 2)
 sheep20_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep20clip.csv")) %>%   dplyr::mutate(sheep = 20,  day = 2)
 sheep24_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep24clip.csv")) %>%   dplyr::mutate(sheep = 24,  day = 2)
@@ -806,8 +806,8 @@ sheep26_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep26clip.csv"
 sheep6_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep6clip.csv")) %>%   dplyr::mutate(sheep = 6,  day = 2)
 sheep13_2 <- read_csv(paste0(path_HOBO_VFtest,  treatment, "/","Sheep13clip.csv")) %>%   dplyr::mutate(sheep = 13,  day = 2)
 
-sheep_day2_control <- rbind(sheep29_2, sheep4_2, sheep8_2, sheep20_2, sheep24_2, sheep18_2, sheep26_2,sheep6_2,  sheep13_2) 
-rm(sheep29_2, sheep4_2, sheep8_2, sheep20_2, sheep24_2, sheep18_2, sheep26_2,sheep6_2,  sheep13_2)
+sheep_day2_control <- rbind(sheep29_2,  sheep8_2, sheep20_2, sheep24_2, sheep18_2, sheep26_2,sheep6_2,  sheep13_2) # cant find this one sheep4_2
+rm(sheep29_2,  sheep8_2, sheep20_2, sheep24_2, sheep18_2, sheep26_2,sheep6_2,  sheep13_2) # cant find this one , sheep4_2
 
 
 Sheep_control <-rbind(sheep_day1_control, sheep_day2_control)
