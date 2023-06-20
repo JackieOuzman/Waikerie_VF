@@ -24,7 +24,7 @@ GPS <- read_csv(paste0(path_step1, "step1a_GPS_cood.csv"))
 HOBO <- read_csv(paste0(path_step1, "HOBO_VFtest.csv")) 
 Behavioural <- read_csv(paste0(path_step1, "Behavioural.csv")) 
 
-## enure the date clms are set to local time
+## enure the date clms are set to local time (I am a bit concerned I have set this to melb - should it be ade?)
 
 GPS$local_time <- as.POSIXct(GPS$local_time,  tz = "Australia/Melbourne")
 str(Behavioural)
