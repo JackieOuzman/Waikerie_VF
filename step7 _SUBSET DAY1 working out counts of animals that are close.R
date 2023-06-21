@@ -24,8 +24,8 @@ list_of_comparsions <- list_of_comparsions %>% mutate(comparison = paste0("dist"
 
 ### ---- for treatment      ----####
 #list_of_comparsions <- list_of_comparsions %>%  filter(treatment == "0.66") 
-list_of_comparsions <- list_of_comparsions %>%  filter(treatment == "0.33") 
-#list_of_comparsions <- list_of_comparsions %>%  filter(treatment == "1") 
+#list_of_comparsions <- list_of_comparsions %>%  filter(treatment == "0.33") 
+list_of_comparsions <- list_of_comparsions %>%  filter(treatment == "1") 
 #list_of_comparsions <- list_of_comparsions %>%  filter(treatment == "control")
 
 
@@ -40,8 +40,8 @@ list_of_sheep <- c(list_of_sheep$sheep )
 ### ---- for treatment      ----####
 #matrix <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_66.csv") 
 #matrix <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_33percent.csv")
-#matrix <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_100percent.csv") 
-matrix <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_control.csv") 
+matrix <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_100percent.csv") 
+#matrix <- read_csv("W:/VF/Optimising_VF/Waikerie/data_prep/step6_dist_between_animals_matrix_control.csv") 
 
 reg_time_step <- matrix %>%   distinct(time_step) #creates a df with regular time step
 
@@ -99,5 +99,5 @@ df <- rbind(df, df_temp)
 
 #write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_66percent_DOT1.csv", row.names = FALSE)
 #write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_33percent_DOT1.csv", row.names = FALSE)
-#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_100percent_DOT1.csv", row.names = FALSE)
-write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_control_DOT1.csv", row.names = FALSE)
+write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_100percent_DOT1.csv", row.names = FALSE)
+#write.csv(df, "W:/VF/Optimising_VF/Waikerie/data_prep/step7_count_close_animals_control_DOT1.csv", row.names = FALSE)
