@@ -200,8 +200,32 @@ collared_animals <- collared_animals %>%
            case_when(Cue == "S" ~ 1,
                      TRUE ~ NA_real_
            ))
+## summary per animals
+cue_summary_total <- collared_animals %>%  group_by(sheep, behaviour_stage, compliance_score) %>% 
+  summarise(total_audio  =sum(audio, na.rm=TRUE),
+            total_pulse  =sum(pulse, na.rm=TRUE),
+            total_ratio = total_audio/(total_pulse+total_audio)*100)
+cue_summary_total
 
 
+## add in the mins logged data
+cue_summary_total <- left_join(cue_summary_total, hours_behav)
+
+cue_summary_total <- cue_summary_total %>% 
+  mutate(total_audio_per_logged = total_audio/ mins,
+         total_pulse_per_logged = total_pulse/ mins,
+         total_ratio_per_logged = ((total_ratio/ mins))
+  )
+cue_summary_total <- cue_summary_total %>% group_by(behaviour_stage, compliance_score) %>% 
+  summarise(Mean_total_audio_per_logged = mean(total_audio_per_logged, na.rm = TRUE),
+            Mean_total_pulse_per_logged = mean(total_pulse_per_logged, na.rm = TRUE),
+            Mean_total_ratio_per_logged = mean(total_ratio_per_logged, na.rm = TRUE))
+            
+
+RF_df <- left_join(RF_df, cue_summary_total)
+
+
+### not sure this is meaningful 
 cue_summary <- collared_animals %>%  group_by(behaviour_stage, compliance_score) %>% 
   summarise(mean_audio  =mean(audio, na.rm=TRUE),
             mean_pulse  =mean(pulse, na.rm=TRUE),
