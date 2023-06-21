@@ -20,9 +20,7 @@ all_animals$local_time <- as.POSIXct(all_animals$local_time,  tz = "Australia/Ad
 ####    remove the animals that don't have collars     ###########################
 ################################################################################
 
-list_of_sheep_VF <- c(2,3,5,13,17,22,30,35,
-                      12,23,25,
-                      10,15,21,27,33,36)
+list_of_sheep_VF <- c(2,3,5,13,14, 17,22,30,35)
 
 
 all_animals_collars <- all_animals %>%  filter( sheep %in% list_of_sheep_VF)
@@ -66,8 +64,8 @@ count_VF_occurance_per_animal_wide
 
 count_VF_occurance_per_animal_wide <- count_VF_occurance_per_animal_wide %>% 
   dplyr::mutate(compliance_score =
-    case_when(prop_exclusion_zone > 5 ~ "compliant",
-              prop_exclusion_zone <= 5 ~ "non_compliant"))
+    case_when(prop_exclusion_zone > 5 ~ "non_compliant",
+              prop_exclusion_zone <= 5 ~ "compliant"))
 
 sheep_compliance_score <- count_VF_occurance_per_animal_wide %>% dplyr::select(sheep, compliance_score)
 
